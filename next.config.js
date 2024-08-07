@@ -2,9 +2,9 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-    output: 'standalone',
+    output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
     distDir: 'dist',
-    image: {
+    images: {
       unoptimized: true,
     }
   };
