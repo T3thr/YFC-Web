@@ -7,5 +7,5 @@ const nextConfig = {
    
  module.exports = {
   // Disable static export
-  output: 'nextConfig',
+  output: 'standalone',
 };
