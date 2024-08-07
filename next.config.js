@@ -5,7 +5,4 @@ const nextConfig = {
     distDir: 'dist',
   };
    
- module.exports = {
-  // Disable static export
-  output: 'standalone',
-};
+ module.exports = nextConfig
