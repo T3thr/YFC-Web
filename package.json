@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@testing-library/react-native": "^12.5.2",
     "autoprefixer": "^10.4.20",
     "lodash": "^4.17.21",
     "next": "14.2.5",
