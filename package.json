@@ -15,7 +15,6 @@
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "postfix-parser": "^1.1.2",
-    "radium": "^0.26.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.74.5",
