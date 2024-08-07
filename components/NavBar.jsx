@@ -9,9 +9,9 @@ function Wrapper({children}) {
         </div>
     )
 }
-const session = await getServerSession(options)
-export default async function NavBar() {
 
+export default async function NavBar() {
+const session = await getServerSession(options)
     return(
         <div className='flex flex-col bg-grey-100'>
         <header className="bg-white shadow-md">

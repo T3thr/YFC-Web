@@ -9,4 +9,7 @@ const nextConfig = {
     },
   };
    
-  module.exports = nextConfig
+ module.exports = {
+  // Disable static export
+  output: 'standalone',
+};
