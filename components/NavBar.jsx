@@ -22,7 +22,7 @@ export default async function NavBar() {
             <wrapper><Link href='/'>Home</Link></wrapper>
             <wrapper><Link href='/profile'>Profile</Link></wrapper>
 
-            <wrapper><Link href='/downloads'>Cart</Link></wrapper>
+            <wrapper><Link href='/cart'>Cart</Link></wrapper>
 
             {session && <Wrapper><Link href='/api/auth/signout'>sign out</Link></Wrapper>}
             {/*แสดงเมนู Sign In หากยังไม่ได้เข้าระบบ*/}
