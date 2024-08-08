@@ -3,6 +3,14 @@
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
+function Wrapper({children}) {
+    return (
+        <div className='hover:ring-1 hover:ring-blue-400 text-blue-600 rounded-sm py-2 px-3 m-2 text-center'>
+            {children}
+        </div>
+    )
+}
+
 export default function CartPage() {
     const {data,status} = useSession()
     if(status === 'loading') {
