@@ -14,14 +14,22 @@ function Wrapper({children}) {
 export default async function NavBar() {
   const session = await getServerSession(options)
   return (
-    <div className='flex flex-row justify-center items-start mx-auto w-4/5 h-16 bg-gray-100'>
-        <Wrapper><Link href='/'>Home</Link></Wrapper>
-        <Wrapper><Link href='/profile'>Profile</Link></Wrapper>
-        <Wrapper><Link href='/downloads'>Downloads</Link></Wrapper>
-        {/* แสดงเมนู Sign Out เมื่อเข้าสู่ระบบแล้ว */}
-        {session && <Wrapper><Link href='/api/auth/signout'>Sign Out</Link></Wrapper>}
-        {/* แสดงเมนู Sign In เมื่อยังไม่ได้เข้าสู่ระบบ */}
-        {!session && <Wrapper><Link href='/api/auth/signin'>Sign In</Link></Wrapper>}
-    </div>
-  )
+    <nav className="bg-white   shadow-md">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        {/* โลโก้ทางซ้าย */}
+        <div className="flex">
+          <h1 className="text-3xl font-bold text-gray-800">Yok Yok Fried Chicken</h1>
+        </div>
+
+        {/* เมนูทางขวา */}
+        <div className="flex space-x-4">
+          <Wrapper><Link href="/">Home</Link></Wrapper>
+          <Wrapper><Link href="/profile">Profile</Link></Wrapper>
+          <Wrapper><Link href="/downloads">Cart</Link></Wrapper>
+          {session && <Wrapper><Link href="/api/auth/signout">Sign Out</Link></Wrapper>}
+          {!session && <Wrapper><Link href="/api/auth/signin">Sign In</Link></Wrapper>}
+        </div>
+      </div>
+    </nav>
+  );
 }
