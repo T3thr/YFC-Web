@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',
-    exclude: ['/api'],
+    //output:"export",
 };
 
 export default nextConfig;
