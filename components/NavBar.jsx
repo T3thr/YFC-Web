@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
-import HamburgerMenu from '../components/HamburgerMenu'; // Adjust the path as needed
 import styles from '@/styles/navbar.module.scss'; // Adjust the path as needed
 
 function Wrapper({ children }) {
