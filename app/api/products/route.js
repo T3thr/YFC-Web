@@ -1,9 +1,9 @@
+// /api/products/route.js
 import mongodbConnect from "@/lib/mongodb"
 import Product from "@/models/Product"
 import { NextResponse } from "next/server"
 
 export async function GET(request) {
-    
     const headers = new Headers(request.headers)
     
     await mongodbConnect()
@@ -15,6 +15,7 @@ export async function GET(request) {
             productSKU: product.productSKU,
             productName: product.productName,
             price: product.price,
+            imageUrl: product.imageUrl // Include imageUrl in the response
         }
     })
     return NextResponse.json(productsMap, {headers: headers})

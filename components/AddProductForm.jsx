@@ -38,9 +38,9 @@ export default function AddProductForm() {
       // Upload image to Cloudinary
       const formData = new FormData();
       formData.append('file', image);
-      formData.append('upload_preset', 'your_upload_preset'); // Set your Cloudinary upload preset here
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
 
-      const imageRes = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+      const imageRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -83,9 +83,7 @@ export default function AddProductForm() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-24 p-2">
       <Title text="แบบฟอร์มเพิ่มสินค้า" />
       {message.text && (
-        <div
-          className={`text-center w-full max-w-xl  ${message.error ? 'bg-red-200' : 'bg-green-200'} rounded-sm shadow-md p-4 my-2`}
-        >
+        <div className={`text-center w-full max-w-xl ${message.error ? 'bg-red-200' : 'bg-green-200'} rounded-sm shadow-md p-4 my-2`}>
           {message.text}
         </div>
       )}
