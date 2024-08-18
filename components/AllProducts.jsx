@@ -31,11 +31,15 @@ export default function AllProducts() {
               {
                 products?.map((item, index) => (
                   <div 
-                      key={index} 
-                      className="bg-white border border-gray-300 p-2 rounded-sm shadow-sm"
-                  >
-                      <ProductItem data={item} />
-                      <img src={item.imageUrl} alt={item.productName} className="w-full h-56 object-cover mt-2" /> {/* Display image */}
+                    key={index} 
+                    className="bg-white border border-gray-300 p-2 rounded-sm shadow-sm"
+                    >
+                    <ProductItem data={item} />
+                    <img 
+                    className="w-full h-56 object-cover object-center" 
+                    src={item.imageUrl} 
+                    alt={item.productName} 
+                    />
                   </div>
                 ))
               }

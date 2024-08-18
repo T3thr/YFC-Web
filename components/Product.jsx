@@ -28,9 +28,9 @@ export default function Product() {
                 {products.map((product, index) => (
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
                     <img 
-                        className="w-full h-56 object-cover object-center" 
-                        src={product.imageUrl}
-                        alt={product.name} 
+                      className="w-full h-56 object-cover object-center" 
+                      src={item.imageUrl} 
+                      alt={item.productName} 
                     />
                     <div className="p-4">
                       <h4 className="text-lg font-semibold text-gray-800">{product.name}</h4>
