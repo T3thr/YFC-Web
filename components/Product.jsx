@@ -27,10 +27,12 @@ export default function Product() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((product, index) => (
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <img 
-                      className="w-full h-56 object-cover object-center" 
-                      src={item.imageUrl} 
-                      alt={item.productName} 
+                    <Image 
+                        className="w-full h-56 object-cover object-center" 
+                        src={product.imageUrl}
+                        alt={product.name}
+                        width={500}
+                        height={500}
                     />
                     <div className="p-4">
                       <h4 className="text-lg font-semibold text-gray-800">{product.name}</h4>

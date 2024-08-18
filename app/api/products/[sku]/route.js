@@ -1,28 +1,73 @@
-// /api/products/[sku]/route.js
-import mongodbConnect from "@/lib/mongodb"
-import Product from "@/models/Product"
 import { NextResponse } from "next/server"
+import Product from '@/models/Product'
 
-export async function POST(request) {
+export async function GET(request, {params}) {
+    
+    const {sku} = params
     try {
-        const { productSKU, productName, price, imageUrl } = await request.json()
-        await mongodbConnect()
         
-        const product = await Product.findOneAndUpdate(
-            { productSKU: productSKU.trim() },
-            { productName, price, imageUrl }, // Update with imageUrl
-            { new: true, upsert: true } // Update if exists, create if not
-        )
+        const product = await Product.findOne({productSKU: sku})
         
-        const productMap = {
-            _id: product._id,
-            productSKU: product.productSKU, 
-            productName: product.productName, 
-            price: product.price,
-            imageUrl: product.imageUrl // Include imageUrl in the response
+        
+        if(product) {
+            
+            const prvProduct =  {
+                productSKU: product.productSKU,
+                productName: product.productName,
+                price: product.price,
+            }
+            return NextResponse.json(prvProduct)
         }
-        return NextResponse.json(productMap)
+        return NextResponse.json({message: 'Not Found Product'})
     } catch (error) {
-        return NextResponse.json({error: error.message})
+        
+        return NextResponse.json({message: error.message})
+    }
+}
+
+export async function POST(request, {params}) {
+    const {sku} = params
+    const {productName, price} = await request.json()
+    try {
+        
+        const product = await Product.findOneAndUpdate({productSKU: sku}, {productName, price})
+        
+        if(product) {
+            
+            const prvProduct =  {
+                productSKU: product.productSKU,
+                productName: product.productName,
+                price: product.price,
+            }
+            return NextResponse.json(prvProduct)
+        }
+        return NextResponse.json({message: 'NO Product Found'})
+    } catch (error) {
+        
+        return NextResponse.json({message: error.message})
+    }
+}
+
+export async function DELETE(request, {params}) {
+    
+    const {productSKU} = await request.json()
+    try {
+        
+        const product = await Product.findOneAndDelete({productSKU: productSKU})
+        
+        
+        if(product) {
+            // ส่งข้อมูลสินค้าทั้งหมดออกไป
+            const prvProduct =  {
+                productSKU: product.productSKU,
+                productName: product.productName,
+                price: product.price,
+            }
+            return NextResponse.json(prvProduct)
+        }
+        return NextResponse.json({message: 'NO Product Deleted'})
+    } catch (error) {
+        
+        return NextResponse.json({message: error.message})
     }
 }

@@ -18,7 +18,8 @@ export default async function NavBar() {
     { title: 'Home', path: '/' },
     { title: 'Profile', path: '/profile' },
     { title: 'Cart', path: '/cart' },
-
+    { title: 'Add Product', path: '/products/add' },
+    { title: 'All Products', path: '/products' }
   ];
 
   if (session) {
