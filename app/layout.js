@@ -1,7 +1,7 @@
 import NavBar from '@/components/NavBar'
-import Product from '@/components/Product'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import mongodbConnect from '@/lib/mongodb'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -10,15 +10,13 @@ export const metadata = {
   description: 'ไก่ทอดหยก หยก แซ่บๆ',
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  await mongodbConnect()
   return (
     <html lang="en">
       <body className={inter.className}>
         <NavBar />
         {children}
-        <div className='flex flex-col items-center justify-center mx-auto min-h-screen p-5'>
-      <Product />
-    </div>
       </body>
     </html>
   )

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
-import styles from '@/styles/navbar.module.scss'; // Adjust the path as needed
+import { FaHome } from 'react-icons/fa'
 
 function Wrapper({ children }) {
   return (
@@ -14,6 +14,21 @@ function Wrapper({ children }) {
 export default async function NavBar() {
   const session = await getServerSession(options);
 
+  const navItems = [
+    { title: 'Home', path: '/' },
+    { title: 'Profile', path: '/profile' },
+    { title: 'Cart', path: '/cart' },
+
+  ];
+
+  if (session) {
+    navItems.push({ title: 'Sign Out', path: '/api/auth/signout' });
+    navItems.push({ title: 'All Products', path: '/products' });
+    navItems.push({ title: 'Add Product', path: '/products/add' });
+  } else {
+    navItems.push({ title: 'Sign In', path: '/api/auth/signin' });
+  }
+
   return (
     <nav className="bg-white shadow-md relative">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -21,7 +36,8 @@ export default async function NavBar() {
         <div className="flex items-center">
           <h1 className="text-3xl font-bold text-gray-800">Yok Yok Fried Chicken</h1>
         </div>
-
+        
+        {/*menu toggle 
         <div className="md:hidden">
           <button id="menu-toggle" calssName="text-white" >
             <svg 
@@ -37,9 +53,9 @@ export default async function NavBar() {
             </svg>
           </button>
         </div>
+        */}
 
-        {/* เมนูทางขวา */}
-
+        {/* เมนูทางขวา }
         <div className="hidden md:flex lg:flex space-x-4">
         <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
           <Wrapper><Link href="/">Home</Link></Wrapper>
@@ -48,21 +64,24 @@ export default async function NavBar() {
           {session && <Wrapper><Link href="/api/auth/signout">Sign Out</Link></Wrapper>}
           {!session && <Wrapper><Link href="/api/auth/signin">Sign In</Link></Wrapper>}
         </div>
-        
-      </div>
-      
-      </div>
-      
-      {/* Mobile menu */}
-      <div className="md:hidden">
-        <div className="flex-col hidden menu-content">
-          <Wrapper><Link href="/">Home</Link></Wrapper>
-          <Wrapper><Link href="/profile">Profile</Link></Wrapper>
-          <Wrapper><Link href="/downloads">Cart</Link></Wrapper>
-          {session && <Wrapper><Link href="/api/auth/signout">Sign Out</Link></Wrapper>}
-          {!session && <Wrapper><Link href="/api/auth/signin">Sign In</Link></Wrapper>}
         </div>
+        {*/}
+                <div className="hidden md:flex lg:flex space-x-4">
+                <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
+        {
+          navItems.map((item,i)=>{
+            return(
+              <Wrapper key={i}>
+                <Link href={item.path}>
+                {item.title}</Link>
+              </Wrapper>
+            )
+          })
+        }
+                </div>
+                </div>
       </div>
+      
     </nav>
   );
 }
