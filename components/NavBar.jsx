@@ -22,9 +22,9 @@ export default async function NavBar() {
   ];
 
   if (session) {
-    navItems.push({ title: 'Sign Out', path: '/api/auth/signout' });
     navItems.push({ title: 'All Products', path: '/products' });
     navItems.push({ title: 'Add Product', path: '/products/add' });
+    navItems.push({ title: 'Sign Out', path: '/api/auth/signout' });
   } else {
     navItems.push({ title: 'Sign In', path: '/api/auth/signin' });
   }

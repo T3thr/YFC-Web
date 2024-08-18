@@ -1,5 +1,6 @@
 'use client'
 import { useAllProducts } from '@/lib/useAllProducts'
+import Image from 'next/image';
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
