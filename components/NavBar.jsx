@@ -18,8 +18,6 @@ export default async function NavBar() {
     { title: 'Home', path: '/' },
     { title: 'Profile', path: '/profile' },
     { title: 'Cart', path: '/cart' },
-    { title: 'Add Product', path: '/products/add' },
-    { title: 'All Products', path: '/products' }
   ];
 
   if (session) {
@@ -67,8 +65,8 @@ export default async function NavBar() {
         </div>
         </div>
         {*/}
-                <div className="hidden md:flex lg:flex space-x-4">
-                <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
+        <div className=" md:flex lg:flex space-x-4">
+        <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
         {
           navItems.map((item,i)=>{
             return(
@@ -79,8 +77,8 @@ export default async function NavBar() {
             )
           })
         }
-                </div>
-                </div>
+        </div>
+        </div>
       </div>
       
     </nav>
