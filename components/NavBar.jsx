@@ -2,8 +2,10 @@
 import Link from 'next/link';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { IconButton } from '@chakra-ui/react'
+import { Show, Hide } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
-import { SessionProvider } from 'next-auth/react';
+import { useState } from 'react';
+
 
 function Wrapper({ children }) {
   return (
@@ -16,7 +18,12 @@ function Wrapper({ children }) {
 export default function NavBar() {
   const { data: session, status } = useSession()
   // ขณะกำลังเข้าสู่ระบบ หรือออกจากระบบ
+  const [isClick, setisClick] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleNavBar = () => {
+    setisClick(!isClick)
+  }
 
   const navItems = [
     { title: 'Home', path: '/' },
@@ -39,29 +46,47 @@ export default function NavBar() {
         <div className="flex items-center">
           <h1 className="text-3xl font-bold text-gray-800">Yok Yok Fried Chicken</h1>
         </div>
-        
         <div className=" md:flex lg:flex space-x-4">
-        <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
+        <div className="hidden md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
         {
           navItems.map((item,i)=>{
             return(
               <Wrapper key={i}>
                 <Link href={item.path}>
                 {item.title}</Link>
-              </Wrapper>
+              </Wrapper>      
             )
           })
         }
+        </div>     
+          <IconButton
+            aria-label="open menu"
+            size="lg"
+            mr={2}
+            icon={<HamburgerIcon/>}
+            onClick={toggleNavBar}
+          />
         </div>
-        </div>
-        <IconButton
-          aria-label="open menu"
-          size="lg"
-          mr={2}
-          icon={<HamburgerIcon/>}
-        />  
       </div>
-      
+      {isClick && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
+            <div className=" md:flex lg:flex space-x-4">
+            <div className="md:flex lg:flex lg:space-x-4 lg:w-auto w-full">
+            {
+              navItems.map((item,i)=>{
+                return(
+                  <Wrapper key={i}>
+                    <Link href={item.path}>
+                    {item.title}</Link>
+                  </Wrapper>
+                )
+              })
+            }
+            </div>
+            </div>
+          </div>
+      )}
     </nav>
   );
 }
