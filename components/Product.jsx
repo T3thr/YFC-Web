@@ -1,18 +1,26 @@
 'use client'
 import { useAllProducts } from '@/lib/useAllProducts'
 import Image from 'next/image';
+import Loading from '@/app/loading'
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
 
     if (error) {
-        return <div>{error.message}</div>
+      return <div>{error.message}</div>
     }
     
     if (isLoading) {
-        return <div>Loading...</div>
+      return <Loading />
     }
 
+    if (products?.length === 0) {
+      return (
+          <div className='flex justify-center items-center min-w-full min-h-screen'>
+              <div className='text-xl text-blue-400'>ไม่พบสินค้า</div>
+          </div>
+      )
+    }
     return (
       <div className="flex flex-col min-h-screen">
         <header className="bg-gray-200 shadow-md">
