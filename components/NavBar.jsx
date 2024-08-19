@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth/next';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { IconButton } from '@chakra-ui/react'
 
-const session = getServerSession(options);
 
 function Wrapper({ children }) {
   return (
@@ -16,6 +15,7 @@ function Wrapper({ children }) {
 }
 
 export default function NavBar() {
+  const session = getServerSession(options);
 
   const navItems = [
     { title: 'Home', path: '/' },
