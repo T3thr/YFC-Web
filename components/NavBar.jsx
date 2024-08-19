@@ -1,10 +1,9 @@
 'use client'
 import Link from 'next/link';
-import { options } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth/next';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { IconButton } from '@chakra-ui/react'
-
+import { useSession } from 'next-auth/react'
+import { SessionProvider } from 'next-auth/react';
 
 function Wrapper({ children }) {
   return (
@@ -15,7 +14,9 @@ function Wrapper({ children }) {
 }
 
 export default function NavBar() {
-  const session = getServerSession(options);
+  const { data: session, status } = useSession()
+  // ขณะกำลังเข้าสู่ระบบ หรือออกจากระบบ
+
 
   const navItems = [
     { title: 'Home', path: '/' },
@@ -23,7 +24,7 @@ export default function NavBar() {
     { title: 'Cart', path: '/cart' },
   ];
 
-  if (session) {
+  if (status === 'authenticated') {
     navItems.push({ title: 'All Products', path: '/products' });
     navItems.push({ title: 'Add Product', path: '/products/add' });
     navItems.push({ title: 'Sign Out', path: '/api/auth/signout' });
