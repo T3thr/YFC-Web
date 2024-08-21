@@ -1,17 +1,66 @@
 'use client'
-import { useRef, useState } from 'react';
-import Loading from '@/app/loading';
-import Link from 'next/link';
-import Title from '@/components/Title';
-import UploadForm from '@/components/UploadForm';
+import { useRef, useState } from 'react'
 import PhotoCard from './PhotoCard'
 import ButtonSubmit from './ButtonSubmit'
 import { revalidate, uploadPhoto } from '@/lib/uploadActions'
 import { revalidatePath } from 'next/cache'
-
-
+import Loading from '@/app/loading';
+import Link from 'next/link';
+import Title from '@/components/Title';
 
 export default function AddProductForm() {
+  
+  const [productSKU, setProductSKU] = useState('');
+  const [productName, setProductName] = useState('');
+  const [price, setPrice] = useState('');
+  
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const [message, setMessage] = useState({
+    text:null,
+    error:false
+  });
+  
+  function clearFormData() {
+    setProductName('')
+    setProductSKU('')
+    setPrice('')
+  }
+  async function handleSubmit(event) {
+    event.preventDefault();
+    
+    setIsLoading(true)
+    try {
+        setMessage({...message, text:'', error: false})
+        
+        const res = await fetch('/api/products/add', {
+          method: 'POST',
+          body: JSON.stringify({
+            productSKU,
+            productName,
+            price
+          })
+        })
+        const result = await res.json()
+        if(result.error) {
+          
+          setMessage({...message, text: result.error, error: true})
+        } else if(result.productSKU) {
+          
+          setMessage({...message, text:'Add Product Successfully!', error: false})
+        }
+        clearFormData()
+    } catch (error) {
+        
+        setMessage({...message, text:error.message, error: true})
+    } finally {
+        setIsLoading(false)
+    }
+  };
+  
+  if(isLoading) {
+    return   <Loading /> 
+  }
 
   const formRef = useRef();
   const [files, setFiles] = useState([]);
@@ -75,65 +124,7 @@ export default function AddProductForm() {
       revalidate("/")
 
   }
-  
 
-  
-  const [productSKU, setProductSKU] = useState('');
-  const [productName, setProductName] = useState('');
-  const [price, setPrice] = useState('');
-  
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const [message, setMessage] = useState({
-    text:null,
-    error:false
-  });
-  
-  function clearFormData() {
-    setProductName('')
-    setProductSKU('')
-    setPrice('')
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    
-    setIsLoading(true)
-    try {
-        setMessage({...message, text:'', error: false})
-        
-        const res = await fetch('/api/products/add', {
-          method: 'POST',
-          body: JSON.stringify({
-            productSKU,
-            productName,
-            price
-          })
-        })
-        const result = await res.json()
-
-        if (result.error) {
-          setMessage({ ...message, text: result.error, error: true });
-        } else if (result.productSKU) {
-          setMessage({ ...message, text: 'Add Product Successfully!', error: false });
-        }
-
-        clearFormData()
-
-        // Clear image files
-        setFiles([]); 
-        
-    } catch (error) {
-        
-        setMessage({...message, text:error.message, error: true})
-    } finally {
-        setIsLoading(false)
-    }
-  };
-  
-  if(isLoading) {
-    return   <Loading /> 
-  }
   return (
 <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-24 p-2">
     <Title text="แบบฟอร์มเพิ่มสินค้า" />
@@ -178,7 +169,7 @@ export default function AddProductForm() {
         </label>
         <label className="block mt-4">
             <span className="text-sm text-gray-600">ราคา</span>
-          
+            
             <input
             type="number"
             value={price}
@@ -187,31 +178,29 @@ export default function AddProductForm() {
             className="mt-1 block w-full border border-gray-300 rounded-sm shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
         </label>
-        </div>
-        
+
         <div style={{ background: '#ddd',minHeight: 200,margin: '10px 0',padding: 10 }}>
-            <input type='file' accept='image/*' multiple onChange={handleInputFiles} />
-            <h5 style={{ color: 'red' }}>
-                (*) สามารถอัพโหลดได้เพียงรูปภาพเดียว และขนาดไม่เกิน 2mb
-            </h5>
+                <input type='file' accept='image/*' multiple onChange={handleInputFiles} />
+                <h5 style={{ color: 'red' }}>
+                    (*) สามารถอัพโหลดได้เพียงรูปภาพเดียว และขนาดไม่เกิน 2mb
+                </h5>
 
-            {/* preview image */}
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0' , alignItems: 'center' ,justifyContent: 'center'  }}>
-                {
-                    files.map((file, index) => (
-                        <PhotoCard key={index} url={URL.createObjectURL(file)}
-                            onClick={() => handleDeleteFile(index)}
-                        />
-                    ))
-                }
-            </div>
+                {/* preview image */}
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0' }}>
+                    {
+                        files.map((file, index) => (
+                            <PhotoCard key={index} url={URL.createObjectURL(file)}
+                                onClick={() => handleDeleteFile(index)}
+                            />
+                        ))
+                    }
+                </div>
 
-            <div className='flex flex-col items-center'>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                <div className='flex flex-col items-center'>
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                </div>
             </div>
         </div>
-
-               
 
         <div className="flex justify-end mt-6">
         <Link
@@ -221,7 +210,6 @@ export default function AddProductForm() {
             หน้าสินค้า
         </Link>
         <button
-          value='Upload to Cloudinary'
             type="submit"
             className="px-2 py-1 text-white bg-blue-500 rounded-sm hover:bg-blue-400 focus:outline-none active:bg-blue-600"
         >
@@ -229,7 +217,6 @@ export default function AddProductForm() {
         </button>
         </div>
     </div>
-    
     </form>
 </div>
   );

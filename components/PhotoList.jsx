@@ -1,4 +1,4 @@
-
+'use client'
 import { deletePhoto } from '@/lib/uploadActions'
 import PhotoCard from './PhotoCard'
 
