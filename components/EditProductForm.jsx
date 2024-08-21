@@ -19,7 +19,7 @@ export default function EditProductForm({sku}) {
         text:null,
         error: false
     });
-      function updateProduct() {
+    async function updateProduct() {
         const res = await fetch(`/api/products/${sku}`, {
             method: 'POST',
             body: JSON.stringify({
@@ -32,7 +32,7 @@ export default function EditProductForm({sku}) {
         }
         return res.json();
     }
-      function getProductData() {
+    async function getProductData() {
         setIsLoading(true)
         const res = await fetch(`/api/products/${sku}`)
         if (!res.ok) {
@@ -48,7 +48,7 @@ export default function EditProductForm({sku}) {
     useEffect(() => {
         getProductData()
     },[])
-    function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     
     setIsLoading(true)
