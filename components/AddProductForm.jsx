@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Title from '@/components/Title';
 import PhotoList from './PhotoList'
 
-export default async function AddProductForm() {
+export default   function AddProductForm() {
   
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
@@ -31,14 +31,14 @@ export default async function AddProductForm() {
     setProductSKU('')
     setPrice('')
   }
-  async function handleSubmit(event) {
+    function handleSubmit(event) {
     event.preventDefault();
     
     setIsLoading(true)
     try {
         setMessage({...message, text:'', error: false})
         
-        const res = await fetch('/api/products/add', {
+        const res =    fetch('/api/products/add', {
           method: 'POST',
           body: JSON.stringify({
             productSKU,
@@ -46,7 +46,7 @@ export default async function AddProductForm() {
             price
           })
         })
-        const result = await res.json()
+        const result =    res.json()
         if(result.error) {
           
           setMessage({...message, text: result.error, error: true})
@@ -77,7 +77,7 @@ export default async function AddProductForm() {
   }
 
   
-  async function handleInputFiles(e) {
+    function handleInputFiles(e) {
       const files = e.target.files;
       const maxFiles = 1;
 
@@ -109,13 +109,13 @@ export default async function AddProductForm() {
       formRef.current.reset();
   }
 
-  async function handleDeleteFile(index) {
+    function handleDeleteFile(index) {
       const newFiles = files.filter((_, i) => i !== index);
       setFiles(newFiles);
       setErrorMessage(null); // error จะหายเมื่อลบลบ
   }
 
-  async function handleUpload() {
+    function handleUpload() {
       if(!files.length) return alert('โปรดอัพโหลดรูปสินค้า')
       
       const formData = new FormData();
@@ -124,8 +124,8 @@ export default async function AddProductForm() {
           formData.append('files', file)
       }) 
 
-      const res = await uploadPhoto(formData)
-      if(res?.msg) alert('Success : ' + res?.msg) // await delay(2000)
+      const res =    uploadPhoto(formData)
+      if(res?.msg) alert('Success : ' + res?.msg) //    delay(2000)
       if(res?.errMsg) alert('Error : ' + res?.errMsg)
 
       setFiles([])
