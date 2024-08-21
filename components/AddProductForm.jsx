@@ -1,10 +1,82 @@
 'use client'
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Loading from '@/app/loading';
 import Link from 'next/link';
 import Title from '@/components/Title';
+import UploadForm from '@/components/UploadForm';
+import PhotoCard from './PhotoCard'
+import ButtonSubmit from './ButtonSubmit'
+import { revalidate, uploadPhoto } from '@/lib/uploadActions'
+import { revalidatePath } from 'next/cache'
+
+
 
 export default function AddProductForm() {
+
+  const formRef = useRef();
+  const [files, setFiles] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null); // ข้อความ error
+
+  async function handleInputFiles(e) {
+      const files = e.target.files;
+      const maxFiles = 1;
+
+      // ตรวจสอบว่าไฟล์ที่อัพโหลดเกินลืมิตไหม
+      if (files.length > maxFiles) {
+          setErrorMessage(`Error: You can upload up to ${maxFiles} images.`);
+          return;
+      }
+
+      const newFiles = [...files].filter(file => {
+          if (file.size < 2 * 1024 * 1024 && file.type.startsWith('image/')) {
+              return file;
+          } else {
+              setErrorMessage('Error: File size exceeds 2MB limit.');
+              return false;
+          }
+      });
+
+      // Update state เมื่อเพิ่มไฟล์
+      setFiles(prev => {
+          const allFiles = [...newFiles, ...prev];
+          if (allFiles.length <= maxFiles) {
+              return allFiles;
+          } else {
+              setErrorMessage(`อัพโหลดได้เพียง ${maxFiles} รูปเท่านั้น`);
+              return prev;
+          }
+      });
+      formRef.current.reset();
+  }
+
+  async function handleDeleteFile(index) {
+      const newFiles = files.filter((_, i) => i !== index);
+      setFiles(newFiles);
+      setErrorMessage(null); // error จะหายเมื่อลบลบ
+  }
+
+  async function handleUpload() {
+      if(!files.length) return alert('โปรดอัพโหลดรูปสินค้า')
+      
+      const formData = new FormData();
+
+      files.forEach(file => {
+          formData.append('files', file)
+      }) 
+
+      const res = await uploadPhoto(formData)
+      if(res?.msg) alert('Success : ' + res?.msg) // await delay(2000)
+      if(res?.errMsg) alert('Error : ' + res?.errMsg)
+
+      setFiles([])
+      formRef.current.reset()
+      // delay ประมาณ 2 วิ
+      // จากนั้น call getAllPhoto()
+      revalidate("/")
+
+  }
+  
+
   
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
@@ -22,6 +94,7 @@ export default function AddProductForm() {
     setProductSKU('')
     setPrice('')
   }
+
   async function handleSubmit(event) {
     event.preventDefault();
     
@@ -38,14 +111,18 @@ export default function AddProductForm() {
           })
         })
         const result = await res.json()
-        if(result.error) {
-          
-          setMessage({...message, text: result.error, error: true})
-        } else if(result.productSKU) {
-          
-          setMessage({...message, text:'Add Product Successfully!', error: false})
+
+        if (result.error) {
+          setMessage({ ...message, text: result.error, error: true });
+        } else if (result.productSKU) {
+          setMessage({ ...message, text: 'Add Product Successfully!', error: false });
         }
+
         clearFormData()
+
+        // Clear image files
+        setFiles([]); 
+        
     } catch (error) {
         
         setMessage({...message, text:error.message, error: true})
@@ -71,7 +148,7 @@ export default function AddProductForm() {
     </div>
     }
     
-    <form
+    <form action={handleUpload} ref={formRef}
     onSubmit={handleSubmit}
     className="w-full max-w-xl bg-white rounded-sm shadow-md p-6"
     >
@@ -101,7 +178,7 @@ export default function AddProductForm() {
         </label>
         <label className="block mt-4">
             <span className="text-sm text-gray-600">ราคา</span>
-            
+          
             <input
             type="number"
             value={price}
@@ -111,6 +188,31 @@ export default function AddProductForm() {
             />
         </label>
         </div>
+        
+        <div style={{ background: '#ddd',minHeight: 200,margin: '10px 0',padding: 10 }}>
+            <input type='file' accept='image/*' multiple onChange={handleInputFiles} />
+            <h5 style={{ color: 'red' }}>
+                (*) สามารถอัพโหลดได้เพียงรูปภาพเดียว และขนาดไม่เกิน 2mb
+            </h5>
+
+            {/* preview image */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0' , alignItems: 'center' ,justifyContent: 'center'  }}>
+                {
+                    files.map((file, index) => (
+                        <PhotoCard key={index} url={URL.createObjectURL(file)}
+                            onClick={() => handleDeleteFile(index)}
+                        />
+                    ))
+                }
+            </div>
+
+            <div className='flex flex-col items-center'>
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            </div>
+        </div>
+
+               
+
         <div className="flex justify-end mt-6">
         <Link
             href={'/products'}
@@ -119,6 +221,7 @@ export default function AddProductForm() {
             หน้าสินค้า
         </Link>
         <button
+          value='Upload to Cloudinary'
             type="submit"
             className="px-2 py-1 text-white bg-blue-500 rounded-sm hover:bg-blue-400 focus:outline-none active:bg-blue-600"
         >
@@ -126,6 +229,7 @@ export default function AddProductForm() {
         </button>
         </div>
     </div>
+    
     </form>
 </div>
   );

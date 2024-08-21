@@ -1,6 +1,7 @@
 import React from 'react'
 import EditProductButton from './EditProductButton'
 import DeleteProductButton from './DeleteProductButton'
+import PhotoCard from './PhotoCard'
 
 export default function ProductItem({data, refreshProducts}) {
   return (
@@ -29,6 +30,17 @@ export default function ProductItem({data, refreshProducts}) {
             {data.price}
         </div>
     </div>
+          {/* Display the product image */}
+          {data.imageURL && (
+        <div className='flex justify-center mx-auto text-sm m-1'>
+                      {
+                photos.map(photo => (
+                    <PhotoCard key={photo?.public_id} url={photo?.secure_url} 
+                    onClick={() => handleDeletePhoto(photo?.public_id)} />
+                ))
+            }
+        </div>
+      )}
     <div className='flex justify-center mx-auto text-sm m-1'>
         <EditProductButton sku={data.productSKU} />
         <DeleteProductButton product={data} refreshProducts={refreshProducts}/>
