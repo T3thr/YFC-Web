@@ -8,9 +8,8 @@ import Loading from '@/app/loading';
 import Link from 'next/link';
 import Title from '@/components/Title';
 import PhotoList from './PhotoList'
-import { useFormStatus} from 'react-dom'
 
-export default function AddProductForm() {
+export default async function AddProductForm() {
   
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
