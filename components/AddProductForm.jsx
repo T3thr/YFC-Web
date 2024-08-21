@@ -13,6 +13,10 @@ export default function AddProductForm() {
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
+
+  const formRef = useRef();
+  const [files, setFiles] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null); // ข้อความ error
   
   const [isLoading, setIsLoading] = useState(false);
   
@@ -61,10 +65,6 @@ export default function AddProductForm() {
   if(isLoading) {
     return   <Loading /> 
   }
-
-  const formRef = useRef();
-  const [files, setFiles] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null); // ข้อความ error
 
   async function handleInputFiles(e) {
       const files = e.target.files;
