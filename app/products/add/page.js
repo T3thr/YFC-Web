@@ -5,7 +5,7 @@ import { getAllPhotos } from '@/lib/uploadActions'
 import PhotoList from '@/components/PhotoList'
 
 
-const AddProductPage = async () => {
+export default async function AddProductPage() {
   const photos = await getAllPhotos()
 
   return ( 
@@ -18,4 +18,3 @@ const AddProductPage = async () => {
   )
 }
 
-export default AddProductPage

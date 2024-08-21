@@ -8,8 +8,8 @@ import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({ children }) {
-  mongodbConnect()
+export default async function RootLayout({ children }) {
+  await mongodbConnect()
 
   return (
     <html lang="en">
