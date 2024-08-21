@@ -31,7 +31,7 @@ export default function AddProductForm() {
     setProductSKU('')
     setPrice('')
   }
-  async function handleSubmit(event) {
+    function handleSubmit(event) {
     event.preventDefault();
     
     setIsLoading(true)
@@ -77,7 +77,7 @@ export default function AddProductForm() {
   }
 
   
-  async function handleInputFiles(e) {
+    function handleInputFiles(e) {
       const files = e.target.files;
       const maxFiles = 1;
 
@@ -109,13 +109,13 @@ export default function AddProductForm() {
       formRef.current.reset();
   }
 
-  async function handleDeleteFile(index) {
+    function handleDeleteFile(index) {
       const newFiles = files.filter((_, i) => i !== index);
       setFiles(newFiles);
       setErrorMessage(null); // error จะหายเมื่อลบลบ
   }
 
-  async function handleUpload() {
+    function handleUpload() {
       if(!files.length) return alert('โปรดอัพโหลดรูปสินค้า')
       
       const formData = new FormData();
