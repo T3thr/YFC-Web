@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState, useCallback } from 'react';
 import Loading from '@/app/loading';
 import Link from 'next/link';
