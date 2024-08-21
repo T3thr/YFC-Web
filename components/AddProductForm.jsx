@@ -9,7 +9,11 @@ import Link from 'next/link';
 import Title from '@/components/Title';
 import PhotoList from './PhotoList'
 
-export default async function AddProductForm() {
+export default function AddProductForm() {
+  
+  const [productSKU, setProductSKU] = useState('');
+  const [productName, setProductName] = useState('');
+  const [price, setPrice] = useState('');
 
   const formRef = useRef();
   const [files, setFiles] = useState([]);
