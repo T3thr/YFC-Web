@@ -1,3 +1,4 @@
+'use server'
 import React from 'react'
 import AddProductForm from "@/components/AddProductForm"
 import UploadForm from "@/components/UploadForm"
@@ -10,7 +11,7 @@ export default async function AddProductPage() {
 
   return ( 
     <div>
-      <AddProductForm />
+
       <UploadForm />
       <h1>All Photo</h1>
       <PhotoList photos={photos || []} />
