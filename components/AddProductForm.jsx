@@ -7,6 +7,8 @@ import { revalidatePath } from 'next/cache'
 import Loading from '@/app/loading';
 import Link from 'next/link';
 import Title from '@/components/Title';
+import PhotoList from './PhotoList'
+import { useFormStatus} from 'react-dom'
 
 export default function AddProductForm() {
   
@@ -53,7 +55,16 @@ export default function AddProductForm() {
           
           setMessage({...message, text:'Add Product Successfully!', error: false})
         }
+
+        
         clearFormData()
+
+        // Clear image files
+        setFiles([]); 
+
+
+        
+
     } catch (error) {
         
         setMessage({...message, text:error.message, error: true})
@@ -66,6 +77,7 @@ export default function AddProductForm() {
     return   <Loading /> 
   }
 
+  
   async function handleInputFiles(e) {
       const files = e.target.files;
       const maxFiles = 1;
@@ -125,7 +137,11 @@ export default function AddProductForm() {
 
   }
 
-  return (
+
+
+
+
+  return ( 
 <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-24 p-2">
     <Title text="แบบฟอร์มเพิ่มสินค้า" />
     { 
@@ -140,7 +156,6 @@ export default function AddProductForm() {
     }
     
     <form action={handleUpload} ref={formRef}
-    onSubmit={handleSubmit}
     className="w-full max-w-xl bg-white rounded-sm shadow-md p-6"
     >
     <div className="mt-4">
@@ -209,12 +224,10 @@ export default function AddProductForm() {
         >
             หน้าสินค้า
         </Link>
-        <button
-            type="submit"
+        <ButtonSubmit
             className="px-2 py-1 text-white bg-blue-500 rounded-sm hover:bg-blue-400 focus:outline-none active:bg-blue-600"
-        >
-            เพิ่มสินค้า
-        </button>
+            value='Upload to Cloudinary'
+        />
         </div>
     </div>
     </form>

@@ -11,7 +11,7 @@ const AddProductPage = async () => {
   return ( 
     <div>
       <AddProductForm />
-      
+      <UploadForm />
       <h1>All Photo</h1>
       <PhotoList photos={photos || []} />
     </div>
