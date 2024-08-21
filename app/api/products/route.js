@@ -16,6 +16,6 @@ export async function GET(request) {
             productName: product.productName,
             price: product.price,
         }
-    })
+    })z
     return NextResponse.json(productsMap, {headers: headers})
 }
