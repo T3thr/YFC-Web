@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Title from '@/components/Title';
 import PhotoList from './PhotoList'
 
-export default function AddProductForm() {
+export default async function AddProductForm() {
   
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
@@ -31,7 +31,7 @@ export default function AddProductForm() {
     setProductSKU('')
     setPrice('')
   }
-    function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     
     setIsLoading(true)
@@ -77,7 +77,7 @@ export default function AddProductForm() {
   }
 
   
-    function handleInputFiles(e) {
+  async function handleInputFiles(e) {
       const files = e.target.files;
       const maxFiles = 1;
 
@@ -109,13 +109,13 @@ export default function AddProductForm() {
       formRef.current.reset();
   }
 
-    function handleDeleteFile(index) {
+  async function handleDeleteFile(index) {
       const newFiles = files.filter((_, i) => i !== index);
       setFiles(newFiles);
       setErrorMessage(null); // error จะหายเมื่อลบลบ
   }
 
-    function handleUpload() {
+  async function handleUpload() {
       if(!files.length) return alert('โปรดอัพโหลดรูปสินค้า')
       
       const formData = new FormData();
