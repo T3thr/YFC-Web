@@ -17,7 +17,7 @@ export default function AddProductForm() {
   const [files, setFiles] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null); // ข้อความ error
 
-  async function handleInputFiles(e) {
+    function handleInputFiles(e) {
       const files = e.target.files;
       const maxFiles = 1;
 
@@ -49,13 +49,13 @@ export default function AddProductForm() {
       formRef.current.reset();
   }
 
-  async function handleDeleteFile(index) {
+    function handleDeleteFile(index) {
       const newFiles = files.filter((_, i) => i !== index);
       setFiles(newFiles);
       setErrorMessage(null); // error จะหายเมื่อลบลบ
   }
 
-  async function handleUpload() {
+    function handleUpload() {
       if(!files.length) return alert('โปรดอัพโหลดรูปสินค้า')
       
       const formData = new FormData();
@@ -95,7 +95,7 @@ export default function AddProductForm() {
     setPrice('')
   }
 
-  async function handleSubmit(event) {
+    function handleSubmit(event) {
     event.preventDefault();
     
     setIsLoading(true)
