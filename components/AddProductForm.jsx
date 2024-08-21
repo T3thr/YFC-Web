@@ -8,8 +8,6 @@ import Loading from '@/app/loading';
 import Link from 'next/link';
 import Title from '@/components/Title';
 import PhotoList from './PhotoList'
-import cloudinary from 'cloudinary'
-
 
 export default async function AddProductForm() {
 
