@@ -1,6 +1,6 @@
-import React from 'react'
-import EditProductButton from './EditProductButton'
-import DeleteProductButton from './DeleteProductButton'
+import React from 'react';
+import EditProductButton from './EditProductButton';
+import DeleteProductButton from './DeleteProductButton';
 
 export default function ProductItem({ data, refreshProducts }) {
     return (
@@ -10,7 +10,7 @@ export default function ProductItem({ data, refreshProducts }) {
                     <img 
                         src={`/api/products/image/${data.imagePath}`} 
                         alt={data.productName} 
-                        className='max-w-full max-h-32 object-contain'
+                        className='max-w-full max-h-32 object-contain' 
                     />
                 )}
             </div>
@@ -43,5 +43,5 @@ export default function ProductItem({ data, refreshProducts }) {
                 <DeleteProductButton product={data} refreshProducts={refreshProducts} />
             </div>
         </div>
-    )
+    );
 }
