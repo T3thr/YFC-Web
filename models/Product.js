@@ -5,9 +5,7 @@ const productSchema = new Schema(
         productSKU: { type: String, required: true, unique: true },
         productName: { type: String, required: true },
         price: { type: Number, default: 0 },
-        description: { type: String },
-        imagePath: { type: String },
-        pictures: [String],
+        imagePath: { type: String, default: '' }, // GridFS file ID
         note: String
     },
     {

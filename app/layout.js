@@ -5,6 +5,11 @@ import mongodbConnect from '@/lib/mongodb'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const metadata = {
+  title: 'Yok Fried Chicken',
+  description: 'ไก่ทอดหยกๆ แซ่บๆ นัวๆ',
+};
+
 export default async function RootLayout({ children }) {
   await mongodbConnect()
 

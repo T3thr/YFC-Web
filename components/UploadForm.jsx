@@ -14,7 +14,7 @@ const UploadForm = () => {
         const files = e.target.files;
         const maxFiles = 1;
 
-        // ตรวจสอบว่าไฟล์ที่อัพโหลดเกินลืมิตไหม
+        // ตรวจสอบว่าไฟล์ที่อัพโหลดเกินลิมิตไหม
         if (files.length > maxFiles) {
             setErrorMessage(`Error: You can upload up to ${maxFiles} images.`);
             return;

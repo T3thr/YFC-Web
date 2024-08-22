@@ -53,7 +53,7 @@ export default async function NavBar() {
           
         <Wrapper><Link href='/'>Home</Link></Wrapper>
         <Wrapper><Link href='/profile'>Profile</Link></Wrapper>
-        <Wrapper><Link href='/downloads'>Downloads</Link></Wrapper>
+        <Wrapper><Link href='/carts'>Cart</Link></Wrapper>
         {/* แสดงเมนู Sign Out เมื่อเข้าสู่ระบบแล้ว */}
         {session && <Wrapper><Link href='/products'>All Products</Link></Wrapper>}
         {session && <Wrapper><Link href='/products/add'>Add Product</Link></Wrapper>}

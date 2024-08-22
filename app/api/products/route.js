@@ -16,6 +16,7 @@ export async function GET(request) {
             productSKU: product.productSKU,
             productName: product.productName,
             price: product.price,
+            imagePath: product.imagePath, // Ensure imagePath is returned
         }
     })
     return NextResponse.json(productsMap, {headers: headers})
