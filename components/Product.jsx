@@ -1,8 +1,7 @@
-'use client';
-import { useAllProducts } from '@/lib/productAction';
+'use client'
+import { useAllProducts } from '@/lib/productAction'
 import Image from 'next/image';
-import Loading from '@/app/loading';
-import Title from './Title';
+import Loading from '@/app/loading'
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
@@ -22,7 +21,6 @@ export default function Product() {
           </div>
       )
     }
-
     return (
       <div className="flex flex-col min-h-screen">
         <header className="bg-gray-200 shadow-md">
@@ -39,8 +37,8 @@ export default function Product() {
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
                     <Image 
                         className="w-full h-56 object-cover object-center" 
-                        src={`/api/products/image/${product.imagePath}`} 
-                        alt={product.productName}
+                        src={product.imageUrl}
+                        alt={product.name}
                         width={500}
                         height={500}
                     />
@@ -56,5 +54,5 @@ export default function Product() {
           </main>
         </header>
       </div>
-    );
+    )
 }

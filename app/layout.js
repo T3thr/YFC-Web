@@ -17,10 +17,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <title>YFC</title>
       <body className={inter.className}>
- 
+        <div>
           <NavBar />
           {children}
-
+        </div>
       </body>
     </html>
   )

@@ -13,6 +13,7 @@ export default async function AddProductPage() {
     <div>
       <AddProductForm />
       <UploadForm />
+      
       <h1>All Photo</h1>
       <PhotoList photos={photos || []} />
     </div>
