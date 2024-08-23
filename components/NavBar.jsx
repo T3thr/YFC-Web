@@ -72,12 +72,12 @@ export default async function NavBar() {
         {session && <Wrapper><Link href={'/api/auth/signout'} className={`flex items-center justify-center lg:hidden `}>
           <IoLogOut />
         </Link> </Wrapper> }
-        {session && <Wrapper><Link href='/api/auth/signout'>Sign Out</Link></Wrapper>}
+        {session && <Wrapper><Link href='/api/auth/signout' className={`hidden lg:block`}>Sign Out</Link></Wrapper>}
         {/* แสดงเมนู Sign In เมื่อยังไม่ได้เข้าสู่ระบบ */}
-        {session && <Wrapper><Link href={'/api/auth/signin'} className={`flex items-center justify-center lg:hidden `}>
+        {!session && <Wrapper><Link href={'/api/auth/signin'} className={`flex items-center justify-center lg:hidden `}>
           <IoIosLogIn />
         </Link> </Wrapper> }
-        {!session && <Wrapper><Link href='/api/auth/signin'>Sign In</Link></Wrapper>}
+        {!session && <Wrapper><Link href='/api/auth/signin' className={`hidden lg:block`}>Sign In</Link></Wrapper>}
         {/*}
         {
           navItems.map((item,i)=>{
