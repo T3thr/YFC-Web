@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import os from 'os'
 import cloudinary from 'cloudinary'
 import { revalidatePath } from 'next/cache'
-import Photo from "@/models/Photo"
+import Photo from "@/backend/models/Photo"
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,

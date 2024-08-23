@@ -59,23 +59,23 @@ export default async function NavBar() {
         </Link> </Wrapper>
         <Wrapper><Link href='/' className={`hidden lg:block`}>Home</Link></Wrapper>
         <Wrapper><Link href={'/profile'} className={`flex items-center justify-center lg:hidden `}>
-          <VscAccount />
+          <VscAccount /> Profile
         </Link> </Wrapper>
         <Wrapper><Link href='/profile' className={`hidden lg:block`}>Profile</Link></Wrapper>
         <Wrapper><Link href={'/carts'} className={`flex items-center justify-center lg:hidden `}>
-          <FaShoppingCart />
-        </Link> </Wrapper>
+          <FaShoppingCart /> Cart
+        </Link> </Wrapper> 
         <Wrapper><Link href='/carts' className={`hidden lg:block`}>Cart</Link></Wrapper>
         {/* แสดงเมนู Sign Out เมื่อเข้าสู่ระบบแล้ว */}
         {session && <Wrapper><Link href='/products'>All Products</Link></Wrapper>}
         {session && <Wrapper><Link href='/products/add'>Add Product</Link></Wrapper>}
         {session && <Wrapper><Link href={'/api/auth/signout'} className={`flex items-center justify-center lg:hidden `}>
-          <IoLogOut />
+          <IoLogOut /> Sign Out
         </Link> </Wrapper> }
         {session && <Wrapper><Link href='/api/auth/signout' className={`hidden lg:block`}>Sign Out</Link></Wrapper>}
         {/* แสดงเมนู Sign In เมื่อยังไม่ได้เข้าสู่ระบบ */}
         {!session && <Wrapper><Link href={'/api/auth/signin'} className={`flex items-center justify-center lg:hidden `}>
-          <IoIosLogIn />
+          <IoIosLogIn /> Sign In
         </Link> </Wrapper> }
         {!session && <Wrapper><Link href='/api/auth/signin' className={`hidden lg:block`}>Sign In</Link></Wrapper>}
         {/*}

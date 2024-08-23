@@ -1,5 +1,5 @@
 'use client'
-import { useAllProducts } from '@/lib/productAction'
+import { useAllProducts } from '@/backend/lib/productAction'
 import Image from 'next/image';
 import Loading from '@/app/loading'
 

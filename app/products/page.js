@@ -1,7 +1,7 @@
 import AllProducts from '@/components/AllProducts'
 import PhotoList from '@/components/PhotoList'
 import React from 'react'
-import { getAllPhotos } from '@/lib/uploadActions'
+import { getAllPhotos } from '@/backend/lib/uploadActions'
 
 
 export default async function AllProductsPage() {

@@ -2,7 +2,7 @@
 
 import Loading from '@/app/loading'
 import ProductItem from './ProductItem'
-import { useAllProducts } from '@/lib/productAction'
+import { useAllProducts } from '@/backend/lib/productAction'
 import Title from './Title'
 
 export default function AllProducts() {

@@ -1,5 +1,5 @@
-import mongodbConnect from "@/lib/mongodb"
-import Product from "@/models/Product"
+import mongodbConnect from "@/backend/lib/mongodb"
+import Product from "@/backend/models/Product"
 import { NextResponse } from "next/server"
 
 export async function POST(request) {

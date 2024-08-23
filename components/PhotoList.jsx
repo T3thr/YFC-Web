@@ -1,5 +1,5 @@
 'use client'
-import { deletePhoto } from '@/lib/uploadActions'
+import { deletePhoto } from '@/backend/lib/uploadActions'
 import PhotoCard from './PhotoCard'
 
 

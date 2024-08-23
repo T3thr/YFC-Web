@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react'
 import PhotoCard from './PhotoCard'
 import ButtonSubmit from './ButtonSubmit'
-import { revalidate, uploadPhoto } from '@/lib/uploadActions'
+import { revalidate, uploadPhoto } from '@/backend/lib/uploadActions'
 import { revalidatePath } from 'next/cache'
 
 const UploadForm = () => {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import Product from '@/models/Product'
+import Product from '@/backend/models/Product'
 
 export async function GET(request, {params}) {
     

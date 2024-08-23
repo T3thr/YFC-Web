@@ -1,7 +1,7 @@
 import NavBar from '@/components/NavBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import mongodbConnect from '@/lib/mongodb'
+import mongodbConnect from '@/backend/lib/mongodb'
 
 const inter = Inter({ subsets: ['latin'] })
 
