@@ -2,6 +2,7 @@
 import { useAllProducts } from '@/backend/lib/productAction'
 import Image from 'next/image';
 import Loading from '@/app/loading'
+import Filter from '@/components/layouts/Filters'
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
@@ -23,16 +24,21 @@ export default function Product() {
     }
     return (
       <div className="flex flex-col min-h-screen">
-        <header className="bg-gray-200 shadow-md">
-          <main className="flex-grow container mx-auto px-6 py-8">
+        <header >
+          <main className="container mx-auto px-6 py-8">
             <section className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-800">ยินดีต้อนรับสู่ดินแดนไก่ทอด</h2>
               <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
             </section>
 
+            <div className ="flex" >
+              <div className='flex-none w-full h-full'  >
+                <Filter />
+              </div>
             <section>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-6">เมนูแนะนำ</h3>
+            <div className="flex-grow w-full">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
                 {products.map((product, index) => (
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
                     <Image 
@@ -50,7 +56,9 @@ export default function Product() {
                   </div>
                 ))}
               </div>
+              </div>
             </section>
+            </div>
           </main>
         </header>
       </div>

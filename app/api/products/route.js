@@ -1,6 +1,7 @@
 import mongodbConnect from "@/backend/lib/mongodb"
 import Product from "@/backend/models/Product"
 import { NextResponse } from "next/server"
+import nc from "next-connect";
 
 export async function GET(request) {
     

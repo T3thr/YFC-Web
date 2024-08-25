@@ -2,6 +2,7 @@ import NavBar from '@/components/NavBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import mongodbConnect from '@/backend/lib/mongodb'
+import Header from '@/components/layouts/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,8 +18,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <title>YFC</title>
       <body className={inter.className}>
-        <div>
-          <NavBar />
+        <div className='pt-16'>
+          <Header />
+        </div>
+        <div className='pt-16'>
           {children}
         </div>
       </body>
