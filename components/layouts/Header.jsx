@@ -29,13 +29,13 @@ export default async function Header() {
     <div className=" fixed w-full flex shadow-gray-200 shadow-sm bg-red-100 top-12 z-50">
       <div className=' container max-w-screen-xl mx-auto px-4  bg-red-100  '>
         <div className='flex flex-wrap items-center'>
-          <div className='flex-shrink-0 mr-5'>
+          <div className='flex-shrink-0 mr-5 sm:align-middle sm:justify-center'>
             <a href='/'>
               <Image
                 src='/images/logo.png'
                 height='40'
                 width='120'
-                alt='BuyItNow'
+                alt='YFC'
               />
             </a>
           </div>
@@ -53,15 +53,19 @@ export default async function Header() {
             </span>
             </span>
             </Link>
-            {!session && <Wrapper><Link
+            {!session && 
+            <Wrapper>
+              <Link
               href='/api/auth/signin'
               className='px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
             >
-              <i className='text-gray-400 w-5 fa fa-user'></i>
-              <span className='hidden lg:inline ml-1'>Sign in</span>
+              <i className='text-gray-400 w-10 h-10 fa fa-user'></i>
+              <span className='hidden lg:flex items-center ml-1'>Sign In</span>
             </Link></Wrapper> }
 
-            {session && <Wrapper><Link
+            {session && 
+            <Wrapper>
+              <Link
               href='/api/auth/signout'
               className='px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
             >

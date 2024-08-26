@@ -31,13 +31,14 @@ export default function Product() {
               <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
             </section>
 
-            <div className ="flex" >
-              <div className='flex-none w-full h-full'  >
+            <div className ="flex flex-col lg:flex-row" >
+              <div className='md:order-2 sm:order-1 flex md:w-1/3 lg:h-full p-4'  >
                 <Filter />
               </div>
+
             <section>
-            <div className="flex-grow w-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="md:order-1 sm:order-2 flex p-4 max-w-6xl ">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 lg:gap-10">
                 
                 {products.map((product, index) => (
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
