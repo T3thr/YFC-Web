@@ -29,7 +29,7 @@ export default async function Header() {
     <div className=" fixed w-full flex shadow-gray-200 shadow-sm bg-red-100 top-12 z-50">
       <div className=' container max-w-screen-xl mx-auto px-4  bg-red-100  '>
         <div className='flex flex-wrap items-center'>
-          <div className='flex-shrink-0 mr-5 sm:align-middle sm:justify-center'>
+          <div className='flex-shrink-0 mr-5 sm:align-middle sm:justify-center sm:items-center'>
             <a href='/'>
               <Image
                 src='/images/logo.png'

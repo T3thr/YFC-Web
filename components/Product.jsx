@@ -32,12 +32,12 @@ export default function Product() {
             </section>
 
             <div className ="flex flex-col lg:flex-row" >
-              <div className='md:order-2 sm:order-1 flex md:w-1/3 lg:h-full p-4'  >
+              <div className='lg:order-2 md:order-1 flex md:w-1/3 lg:h-full'  >
                 <Filter />
               </div>
 
             <section>
-            <div className="md:order-1 sm:order-2 flex p-4 max-w-6xl ">
+            <div className="lg:order-1 md:order-2 flex  max-w-6xl sm:justify-center ">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 lg:gap-10">
                 
                 {products.map((product, index) => (

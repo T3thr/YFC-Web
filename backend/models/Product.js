@@ -23,7 +23,7 @@ const productSchema = new Schema(
         ],
         category : {
             type: String,
-            required: [true , 'กรุณาเลือกหมวดหมู่สินค้า'],
+
             enum: {
                 values: [
                     "โปรโมชัน",
@@ -54,11 +54,11 @@ const productSchema = new Schema(
         review: {
             rating: {
                 type: Number,
-                required: true
+
             },
             comment: {
                 type: String,
-                required: true
+
             },
             createAt: {
                 type: Date,
