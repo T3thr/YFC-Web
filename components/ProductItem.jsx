@@ -29,6 +29,7 @@ export default function ProductItem({data, refreshProducts}) {
             {data.price}
         </div>
     </div>
+    
     <div className='flex justify-center mx-auto text-sm m-1'>
         <EditProductButton sku={data.productSKU} />
         <DeleteProductButton product={data} refreshProducts={refreshProducts}/>

@@ -150,7 +150,7 @@ const Filters = () => {
                     starDimension='20px'
                     starSpacing='2px'
                     name='rating'
-                    style={starRatingsStyle} // Apply inline style
+                    style={starRatingsStyle}
                   />
                   </div>
                 </span>

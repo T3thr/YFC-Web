@@ -31,13 +31,13 @@ export default function Product() {
               <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
             </section>
 
-            <div className ="flex flex-col lg:flex-row" >
-              <div className='lg:order-2 md:order-1 flex md:w-1/3 lg:h-full'  >
+            <div className ="flex flex-col md:flex-row" >
+              <div className='lg:order-2 md:order-1 float-right flex md:w-1/3 md:h-full md:flex-1'  >
                 <Filter />
               </div>
 
-            <section>
-            <div className="lg:order-1 md:order-2 flex  max-w-6xl sm:justify-center ">
+            <main>
+            <div className="lg:order-1 md:order-2  flex  max-w-12 sm:justify-center ">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 lg:gap-10">
                 
                 {products.map((product, index) => (
@@ -58,7 +58,7 @@ export default function Product() {
                 ))}
               </div>
               </div>
-            </section>
+            </main>
             </div>
           </main>
         </header>
