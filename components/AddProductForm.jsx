@@ -9,6 +9,8 @@ export default function AddProductForm() {
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [stock, setStock] = useState(1);
   
   const [isLoading, setIsLoading] = useState(false);
   
@@ -21,6 +23,8 @@ export default function AddProductForm() {
     setProductName('')
     setProductSKU('')
     setPrice('')
+    setCategory('');
+    setStock(1);
   }
   async function handleSubmit(event) {
     event.preventDefault();
@@ -34,7 +38,9 @@ export default function AddProductForm() {
           body: JSON.stringify({
             productSKU,
             productName,
-            price
+            price,
+            category,
+            stock,
           })
         })
         const result = await res.json()
@@ -110,7 +116,38 @@ export default function AddProductForm() {
             className="mt-1 block w-full border border-gray-300 rounded-sm shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
         </label>
+
+        <label className="block mt-4">
+            <span className="text-sm text-gray-600">หมวดหมู่</span>
+            <select
+              required
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="mt-1 block w-full border border-gray-300 rounded-sm shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+              <option value="">เลือกหมวดหมู่</option>
+              <option value="เมนูแนะนำ">เมนูแนะนำ</option>
+              <option value="โปรโมชัน">โปรโมชัน</option>
+              <option value="ขายดีตลอดกาล">ไก่ๆๆ</option>
+              <option value="ใหม่ล่าสุด">ของทานเล่น</option>
+              <option value="ของสด">เครื่องดื่ม</option>
+              <option value="ของสด">ของสด</option>
+              <option value="ของสด">ของบูด</option>
+            </select>
+          </label>
+
+          <label className="block mt-4">
+            <span className="text-sm text-gray-600">จำนวนสินค้าในสต็อก</span>
+            <input
+              type="number"
+              required
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              className="mt-1 block w-full border border-gray-300 rounded-sm shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </label>
         </div>
+
         <div className="flex justify-end mt-6">
         <Link
             href={'/products'}

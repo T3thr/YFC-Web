@@ -51,7 +51,23 @@ export default function ProductItem({data, refreshProducts}) {
             {data.price}
         </div>
     </div>
-    
+    <div className='flex justify-between mx-auto text-sm m-1'>
+                <div className='bg-gray-200 px-1 w-1/2 border border-white'>
+                    หมวดหมู่
+                </div>
+                <div className='text-center w-1/2'>
+                    {data.category || 'ไม่ระบุ'}
+                </div>
+            </div>
+            <div className='flex justify-between mx-auto text-sm m-1'>
+                <div className='bg-gray-200 px-1 w-1/2 border border-white'>
+                    สต็อก
+                </div>
+                <div className='text-center w-1/2'>
+                    {data.stock} ชิ้น
+                </div>
+            </div>
+            
     <div className='flex justify-center mx-auto text-sm m-1'>
         <EditProductButton sku={data.productSKU} />
         <DeleteProductButton product={data} refreshProducts={refreshProducts}/>

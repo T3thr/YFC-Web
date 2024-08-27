@@ -18,6 +18,12 @@ export async function GET(request) {
             price: product.price,
             images: product.images || [],
             imageUrl: product.imageUrl, // Include image URL in the response
+            category: product.category,
+            stock: product.stock,
+            status: product.status,
+            rating: product.rating,
+            review: product.review,
+            note: product.note,
         }
     })
     return NextResponse.json(productsMap, {headers: headers})
