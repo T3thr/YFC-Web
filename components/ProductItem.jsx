@@ -1,10 +1,32 @@
 import React from 'react'
 import EditProductButton from './EditProductButton'
 import DeleteProductButton from './DeleteProductButton'
+import Link from "next/link";
+import StarRatings from "react-star-ratings";
+import Image from "next/image";
 
 export default function ProductItem({data, refreshProducts}) {
   return (
 <div className='p-1'>
+    <div
+        style={{
+            width: "80%",
+            height: "70%",
+            position: "relative",
+        }}
+        >
+        <Image
+          src={
+            data?.images[0]
+            ? data?.images[0].url
+            : "/images/default_product.png"
+        }
+          alt={data.productName}
+            className="w-full h-56 object-cover object-center" 
+            height="240"
+            width="240"
+        />
+    </div>
     <div className='flex justify-between mx-auto text-sm m-1'>
         <div className='bg-gray-200 px-1 w-1/2 border border-white'>
             รหัส SKU

@@ -23,7 +23,7 @@ function Wrapper({ children }) {
 export default async function Header() {
   const session = await getServerSession(options)
   return (
-    <header className='fixed top-0 w-full flex flex-col lg:flex-row  p-0 bg-white py-0 border-b'>
+    <header className='fixed top-0 w-full flex flex-col lg:flex-row  p-0 bg-white py-0 border-b z-50'>
         
     <NavBar />
     <div className=" fixed w-full flex shadow-gray-200 shadow-sm bg-red-100 top-12 z-50">

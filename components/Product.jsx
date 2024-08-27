@@ -1,12 +1,17 @@
 'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAllProducts } from '@/backend/lib/productAction'
 import Image from 'next/image';
 import Loading from '@/app/loading'
 import Filter from '@/components/layouts/Filters'
 import PhotoGallery from '@/components/PhotoGallery';
+import ProductItem from './ProductItem';
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
+    const searchParams = useSearchParams();
+    const keyword = searchParams.get('keyword') || "";
 
     if (error) {
       return <div>{error.message}</div>
@@ -23,6 +28,12 @@ export default function Product() {
           </div>
       )
     }
+
+      // Filter products based on keyword
+  const filteredProducts = products.filter(product =>
+    product.productName.toLowerCase().includes(keyword.toLowerCase())
+  );
+
     return (
       <div className="flex flex-col min-h-screen">
         <header >
@@ -32,22 +43,24 @@ export default function Product() {
               <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
             </section>
 
-            <div className ="flex flex-col md:flex-row" >
-              <div className='lg:order-2 md:order-1 float-right flex md:w-1/3 md:h-full md:flex-1'  >
+            <div className="flex flex-col md:flex-row ">
+              <div className='lg:order-2 md:order-1 flex md:w-2/5 h-full'  >
                 <Filter />
               </div>
 
-            <main>
-            <div className="lg:order-1 md:order-2  flex  max-w-12 sm:justify-center ">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
+              <main className="md:w-3/5 lg:w-9/15 px-3 w-full h-full">
+            <div className="lg:order-1 md:order-2 ">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
                 
-                {products.map((product, index) => (
-                  <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
-                    
-                    <PhotoGallery
-                        className="w-full h-56 object-cover object-center" 
-                        src={product.imageUrl}
-                        alt={product.name}
+                {filteredProducts.map((product, index) => (
+                  <div key={index} className="bg-white shadow-lg rounded-lg ">
+                    <Image 
+                        src={
+                          product?.images[0]
+                          ? product?.images[0].url
+                          : "/images/default_product.png"
+                        }
+                        alt={product.productName}
                         width={500}
                         height={500}
                     />
