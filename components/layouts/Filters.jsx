@@ -12,6 +12,7 @@ const Filters = () => {
   const [categories, setCategories] = useState([]);
   const [ratings, setRatings] = useState([]);
   const [sortOrder, setSortOrder] = useState('');
+  const [isFilterVisible, setIsFilterVisible] = useState(false); // เปิด-ปิด หน้า filters
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
@@ -69,23 +70,29 @@ const Filters = () => {
     setCategories([]);
     setRatings([]);
     setSortOrder('');
-    router.push('?');
+    router.push('/')
   };
 
   const handleClearFilters = (e) => {
-    e.preventDefault(); // Prevents form submission and page reload
+    e.preventDefault(); // ป้องกันการรีโหลดเพจ
     clearFilters();
   };
 
+  const toggleFilters = () => {
+    setIsFilterVisible(!isFilterVisible);
+  };
+  
   return (
     <aside className='w-full h-full px-6'>
       <a
-        className='md:hidden mb-5 w-full text-center px-4 py-2 inline-block text-lg text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600'
-        href='#'
+        className='md:hidden mb-5 w-full text-center px-4 py-2 inline-block text-lg text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600 cursor-pointer'
+        onClick={toggleFilters}
       >
         Filter by
       </a>
-      <div className='hidden md:block px-6 py-4 border border-gray-200 bg-white rounded shadow-sm'>
+      <div   className={`${
+        isFilterVisible ? 'block' : 'hidden'
+      } md:block px-6 py-4 border border-gray-200 bg-white rounded shadow-sm`}>
         <h3 className='font-semibold mb-2'>ราคา (฿)</h3>
         <div className='grid md:grid-cols-3 gap-x-2'>
           <div className='mb-4'>

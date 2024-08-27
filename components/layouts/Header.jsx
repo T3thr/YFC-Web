@@ -25,11 +25,13 @@ export default async function Header() {
   return (
     <header className='fixed top-0 w-full flex flex-col lg:flex-row  p-0 bg-white py-0 border-b z-50'>
 
-    <div className='top-0'>   
+    <div className='top-0 flex '>   
     <NavBar />
     </div>
 
-    <div className=" fixed w-full flex lg:flex-row shadow-gray-200 shadow-sm bg-red-100 top-14 z-50">
+    <div  className="  w-full flex lg:flex-row shadow-gray-200 shadow-sm bg-red-100 z-50"
+          style={{ marginTop: '2.5rem' }}
+    >
       <div className=' container max-w-screen-xl mx-auto px-4 lg:justify-between  bg-red-100  '>
         <div className='flex flex-wrap items-center'>
           <div className='flex-shrink-0 lg:mr-5 lg:ml-0 mx-auto lg:mx-0 mb-4 lg:mb-0'>
