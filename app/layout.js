@@ -7,7 +7,7 @@ import Header from '@/components/layouts/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Yok Fried Chicken',
+  title: 'YokYok Fried Chicken',
   description: 'ไก่ทอดหยกๆ แซ่บๆ นัวๆ',
 };
 
@@ -18,10 +18,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <title>YFC</title>
       <body className={inter.className}>
-        <div className='lg:pt-16 md:pt-20 sm:pt-32'>
+        <div className='xl:pt-16 md:pt-18 pt-32'>
           <Header />
         </div>
-        <div className='lg:pt-16 md:pt-20 sm:pt-32'>
+        <div className='xl:pt-16 md:pt-18 pt-32'>
           {children}
         </div>
       </body>
