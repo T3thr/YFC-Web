@@ -18,10 +18,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <title>YFC</title>
       <body className={inter.className}>
-        <div className='pt-16'>
+        <div className='lg:pt-16 md:pt-20 sm:pt-32'>
           <Header />
         </div>
-        <div className='pt-16'>
+        <div className='lg:pt-16 md:pt-20 sm:pt-32'>
           {children}
         </div>
       </body>
