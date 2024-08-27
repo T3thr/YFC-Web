@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaSearch } from "react-icons/fa";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
@@ -9,12 +10,17 @@ const Search = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    router.push(`/?keyword=${encodeURIComponent(keyword)}`);
+
+    if (keyword) {
+    router.push(`/?keyword=${(keyword)}`);
+    } else {
+    router.push('/');
+    }
   };
 
   return (
     <form
-      className="flex flex-nowrap items-center w-full order-last md:order-none mt-5 md:mt-0 md:w-2/4 lg:w-2/4"
+      className="relative flex flex-nowrap items-center w-full order-last md:order-none mt-5 md:mt-0 md:w-2/5 lg:w-2/4"
       onSubmit={submitHandler}
     >
       <input
@@ -23,13 +29,12 @@ const Search = () => {
         placeholder="Search products..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        required
       />
       <button
         type="submit"
-        className="px-4 py-2 inline-block text-white border border-transparent bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        className='absolute right-3 top-1/2  transform -translate-y-1/2 px-4 py-2 text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700 text-center text-sm'
       >
-        Search
+        <FaSearch/>
       </button>
     </form>
   );

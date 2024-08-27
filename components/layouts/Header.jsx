@@ -26,10 +26,11 @@ export default async function Header() {
     <header className='fixed top-0 w-full flex flex-col lg:flex-row  p-0 bg-white py-0 border-b z-50'>
         
     <NavBar />
-    <div className=" fixed w-full flex shadow-gray-200 shadow-sm bg-red-100 top-12 z-50">
-      <div className=' container max-w-screen-xl mx-auto px-4  bg-red-100  '>
+
+    <div className=" fixed w-full flex lg:flex-row shadow-gray-200 shadow-sm bg-red-100 top-12 z-50">
+      <div className=' container max-w-screen-xl mx-auto px-4 lg:justify-between  bg-red-100  '>
         <div className='flex flex-wrap items-center'>
-          <div className='flex-shrink-0 mr-5 sm:align-middle sm:justify-center sm:items-center'>
+          <div className='flex-shrink-0 lg:mr-5 lg:ml-0 mx-auto lg:mx-0 mb-4 lg:mb-0'>
             <a href='/'>
               <Image
                 src='/images/logo.png'
@@ -39,6 +40,7 @@ export default async function Header() {
               />
             </a>
           </div>
+          
           <Search />
 
           <div className='flex items-center space-x-2 ml-auto'>
@@ -57,10 +59,15 @@ export default async function Header() {
             <Wrapper>
               <Link
               href='/api/auth/signin'
-              className='px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
+              className='px-3 py-2 lg:px-1 mt-1.5 lg:mt-auto inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
             >
-              <i className='text-gray-400 w-10 h-10 fa fa-user'></i>
-              <span className='hidden lg:flex items-center ml-1'>Sign In</span>
+              <i className='text-gray-400 buttom-5  w-6 h-10 fa fa-user'></i>
+              <span className='hidden lg:flex items-center ml-1'>
+            <IoIosLogIn className='text-gray-400 w-3' />
+            <span className='ml-1'>
+                <b>Sign In</b>
+            </span>
+            </span>
             </Link></Wrapper> }
 
             {session && 
