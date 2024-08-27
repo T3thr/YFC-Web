@@ -3,6 +3,7 @@ import { useAllProducts } from '@/backend/lib/productAction'
 import Image from 'next/image';
 import Loading from '@/app/loading'
 import Filter from '@/components/layouts/Filters'
+import PhotoGallery from '@/components/PhotoGallery';
 
 export default function Product() {
     const { data: products, isLoading, error } = useAllProducts();
@@ -38,11 +39,12 @@ export default function Product() {
 
             <main>
             <div className="lg:order-1 md:order-2  flex  max-w-12 sm:justify-center ">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 lg:gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
                 
                 {products.map((product, index) => (
                   <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <Image 
+                    
+                    <PhotoGallery
                         className="w-full h-56 object-cover object-center" 
                         src={product.imageUrl}
                         alt={product.name}
