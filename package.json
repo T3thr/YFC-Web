@@ -35,7 +35,8 @@
     "react-star-ratings": "^2.3.0",
     "swr": "^2.2.5",
     "typescript": "^5.5.4",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "chokidar": "^3.6.0",
