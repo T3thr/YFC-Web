@@ -39,12 +39,12 @@ export default async function Menu() {
           </a>
         </div>
         
-        <Search />
+        <Search />  
 
-        <div className='flex items-center space-x-2 ml-auto'>
+        <div className='flex items-center space-x-2 ml-auto justify-start mx-auto'>
           <Link
             href='/carts'
-            className='px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
+            className='px-3 py-2 mx-auto inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
           >
           <span className='flex lg:flex items-center ml-1'>
           <FaShoppingCart className='flex text-gray-400 w-4 items-start mr-0' />
@@ -57,7 +57,7 @@ export default async function Menu() {
           <Wrapper>
             <Link
             href='/api/auth/signin'
-            className='px-3 py-2 lg:px-1 lg:mt-auto inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
+            className='px-3 py-2 lg:px-1 lg:mt-auto inline-block justify-start text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
           >
             <span className='flex lg:flex md:hidden items-center ml-1'>
           <IoIosLogIn className=' flex text-gray-400 w-3 mr-1 ' />
@@ -99,7 +99,7 @@ export default async function Menu() {
           </Link>
         </div>
 
-        <div className='lg:hidden ml-2'>
+        <div className='md:hidden sm:flex flex-wrap items-center  ml-2 justify-end md:w-full mx-auto'>
           <button
             type='button'
             className='bg-white p-3 inline-flex items-center rounded-md text-black hover:bg-gray-200 hover:text-gray-800 border border-transparent'
