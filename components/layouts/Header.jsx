@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import Search from './Search';
 import Image from 'next/image';
@@ -11,6 +11,8 @@ import { VscAccount } from "react-icons/vsc";
 import { IoIosLogIn } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import NavBar from '@/components/NavBar';
+import CartContext from '@/context/CartContext';
+
 
 function Wrapper({ children }) {
     return (
@@ -22,6 +24,7 @@ function Wrapper({ children }) {
 
 export default async function Header() {
   const session = await getServerSession(options)
+
   return (
     <header className='fixed top-0 w-full flex flex-col lg:flex-row  p-0 bg-white py-0 border-b z-50'>
 
@@ -49,13 +52,13 @@ export default async function Header() {
 
           <div className='flex items-center space-x-2 ml-auto'>
             <Link
-              href='/cart'
+              href='/carts'
               className='px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300'
             >
             <span className='hidden lg:flex items-center ml-1'>
             <FaShoppingCart className='text-gray-400 w-5' />
             <span className='ml-1'>
-                <b>(0)</b>
+              <b>( 0 )</b>
             </span>
             </span>
             </Link>

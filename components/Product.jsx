@@ -23,6 +23,7 @@ export default function Product() {
     const selectedRatings = searchParams.getAll('ratings').map(r => parseInt(r, 10));
     const sortOrder = searchParams.get('sort') || '';
 
+
     if (error) {
       return <div>{error.message}</div>
     }
@@ -74,6 +75,21 @@ export default function Product() {
     const displayedProducts = sortedProducts.slice((page - 1) * resPerPage, page * resPerPage);
     const productsCount = filteredProducts.length;
 
+    const addToCart = (product) => {
+      const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
+      const productInCart = existingCart.cartItems.find(item => item.product === product._id);
+
+      if (productInCart) {
+          // Update quantity if product already in cart
+          productInCart.quantity += 1;
+      } else {
+          // Add new product to cart
+          existingCart.cartItems.push({ ...product, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+  };
+
     return (
       <div className="flex flex-col min-h-screen">
         <header >
@@ -107,7 +123,8 @@ export default function Product() {
                     <div className="p-4">
                       <h4 className="text-lg font-semibold text-gray-800">{product.productName}</h4>
                       <p className="text-gray-600 mt-2">{product.price} ฿</p>
-                      <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Add to Cart</button>
+                      <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                      onClick={() => addToCart(product)}>Add to Cart</button>
                     </div>
                   </div>
                 ))}               
