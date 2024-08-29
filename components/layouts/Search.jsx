@@ -11,10 +11,16 @@ const Search = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // Get the current URL path
+    const currentPath = window.location.pathname;
+
     if (keyword) {
-    router.push(`/?keyword=${(keyword)}`);
+      // Construct the new URL with the keyword query
+      const newUrl = `${currentPath}?keyword=${encodeURIComponent(keyword)}`;
+      router.push(newUrl);
     } else {
-    router.push('/');
+      // If there's no keyword, redirect to the current path without the keyword
+      router.push(currentPath);
     }
   };
 
@@ -32,9 +38,9 @@ const Search = () => {
       />
       <button
         type="submit"
-        className='absolute right-3 top-1/2  transform -translate-y-1/2 px-4 py-2 text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700 text-center text-sm'
+        className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-2 text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700 text-center text-sm'
       >
-        <FaSearch/>
+        <FaSearch />
       </button>
     </form>
   );

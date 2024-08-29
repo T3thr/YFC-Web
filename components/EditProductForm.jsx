@@ -134,10 +134,11 @@ export default function EditProductForm({ sku }) {
                             <option value="">เลือกหมวดหมู่</option>
                             <option value="เมนูแนะนำ">เมนูแนะนำ</option>
                             <option value="โปรโมชัน">โปรโมชัน</option>
-                            <option value="ขายดีตลอดกาล">ไก่ๆๆ</option>
-                            <option value="ใหม่ล่าสุด">ของทานเล่น</option>
-                            <option value="ของสด">เครื่องดื่ม</option>
+                            <option value="ไก่ๆๆ">ไก่ๆๆ</option>
+                            <option value="ของทานเล่น">ของทานเล่น</option>
+                            <option value="เครื่องดื่ม">เครื่องดื่ม</option>
                             <option value="ของสด">ของสด</option>
+                            <option value="ของบูด">ของบูด</option>
                         </select>
                     </label>
                     

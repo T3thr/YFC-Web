@@ -7,9 +7,15 @@ export default function DeleteProductButton({product}) {
   const [showModal, setShowModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   
-  function openModal() { setShowModal(true) }
+  function openModal() { 
+    setShowModal(true) 
+    document.body.style.overflow = 'hidden'
+  }
   
-  function closeModal() { setShowModal(false) }
+  function closeModal() { 
+    setShowModal(false) 
+    document.body.style.overflow = ''
+  }
   
   async function deleteProduct() {
     setIsLoading(true)
@@ -36,7 +42,7 @@ export default function DeleteProductButton({product}) {
       </button>
 
       {showModal && (
-      <div className="fixed z-100 inset-0 flex items-center justify-center" >
+      <div className="fixed z-50 inset-0 flex items-center justify-center" >
         
         <div className="fixed inset-0 bg-gray-500 bg-opacity-70 transition-opacity" ></div>
         

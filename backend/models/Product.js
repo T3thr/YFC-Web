@@ -35,9 +35,9 @@ const productSchema = new Schema(
                     "ไก่ๆๆ",
                     "ของทานเล่น",
                     "เครื่องดื่ม",
-                    "ของสด"
+                    "ของสด",
                 ],
-                message: "{values} ไม่ใช่หมวดหมู่ที่รองรับ"
+                message: "{values}, ไม่ใช่หมวดหมู่ที่รองรับ"
             }
         },
         stock: {

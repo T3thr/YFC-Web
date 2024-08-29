@@ -64,7 +64,7 @@ export default function ProductItem({data, refreshProducts}) {
                     สต็อก
                 </div>
                 <div className='text-center w-1/2'>
-                    {data.stock} ชิ้น
+                    {data.stock}
                 </div>
             </div>
             

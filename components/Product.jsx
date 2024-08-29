@@ -23,7 +23,6 @@ export default function Product() {
     const selectedRatings = searchParams.getAll('ratings').map(r => parseInt(r, 10));
     const sortOrder = searchParams.get('sort') || '';
 
-
     if (error) {
       return <div>{error.message}</div>
     }
@@ -40,42 +39,36 @@ export default function Product() {
       )
     }
 
-      // Filter products based on keyword
-  const filteredProducts = products.filter(product => {
-    product.productName.toLowerCase().includes(keyword.toLowerCase())
+    // Filter products based on keyword, price, category, and rating
+    const filteredProducts = products.filter(product => {
+      const matchesKeyword = product.productName.toLowerCase().includes(keyword.toLowerCase());
+      const price = parseFloat(product.price);
+      const matchesPrice = price >= minPrice && price <= maxPrice;
+      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+      const productRating = parseFloat(product.rating || '0');
+      const matchesRating = selectedRatings.length === 0 || selectedRatings.includes(Math.round(productRating));
 
-    // Check price range
-    const price = parseFloat(product.price);
-    if (price < minPrice || price > maxPrice) return false;
-
-    // Check category
-    if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) return false;
-
-    // Check rating
-    const productRating = parseFloat(product.rating || '0');
-    if (selectedRatings.length > 0 && !selectedRatings.includes(Math.round(productRating))) return false;
-
-    return true;
+      return matchesKeyword && matchesPrice && matchesCategory && matchesRating;
   });
 
-    // Sort products based on the sortOrder
-    const sortedProducts = filteredProducts.sort((a, b) => {
-        const priceA = parseFloat(a.price);
-        const priceB = parseFloat(b.price);
+  // Sort products based on the sortOrder
+  const sortedProducts = filteredProducts.sort((a, b) => {
+      const priceA = parseFloat(a.price);
+      const priceB = parseFloat(b.price);
 
-        if (sortOrder === 'price-asc') {
-            return priceA - priceB;
-        } else if (sortOrder === 'price-desc') {
-            return priceB - priceA;
-        }
-        return 0;
-    });
+      if (sortOrder === 'price-asc') {
+          return priceA - priceB;
+      } else if (sortOrder === 'price-desc') {
+          return priceB - priceA;
+      }
+      return 0;
+  });
 
-    // Paginate products
-    const displayedProducts = sortedProducts.slice((page - 1) * resPerPage, page * resPerPage);
-    const productsCount = filteredProducts.length;
+  // Paginate products
+  const displayedProducts = sortedProducts.slice((page - 1) * resPerPage, page * resPerPage);
+  const productsCount = filteredProducts.length;
 
-    const addToCart = (product) => {
+  const addToCart = (product) => {
       const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
       const productInCart = existingCart.cartItems.find(item => item.product === product._id);
 
@@ -89,7 +82,6 @@ export default function Product() {
 
       localStorage.setItem('cart', JSON.stringify(existingCart));
   };
-
     return (
       <div className="flex flex-col min-h-screen">
         <header >
