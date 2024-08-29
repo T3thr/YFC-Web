@@ -13,7 +13,7 @@ export default function CartPage() {
     return <Loading />
   }
   // เมื่อออกจากระบบ
-  if(status === 'unauthenticated') {
+  if(status === 'authenticated') {
     return (
       <div className='flex flex-col justify-start items-center mx-auto h-screen my-5'>
       <div className='text-3xl'>Please Sign In!!!</div>
@@ -27,7 +27,7 @@ export default function CartPage() {
     )
   }
   // เมื่อเข้าสู่ระบบเรียบร้อย
-  if(status === 'authenticated') {
+  if(status === 'unauthenticated') {
       return (
         <div className='p-4 min-h-screen'>
         <Cart />
@@ -35,5 +35,5 @@ export default function CartPage() {
     )
   }
 
-  return null
+  return null;
 }    

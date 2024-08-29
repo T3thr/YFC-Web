@@ -3,8 +3,10 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import mongodbConnect from '@/backend/lib/mongodb'
 import Header from '@/components/layouts/Header'
+import { CartProvider } from '@/context/CartContext';
 
 const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata = {
   title: 'YokYok Fried Chicken',
@@ -15,15 +17,17 @@ export default async function RootLayout({ children }) {
   await mongodbConnect()
 
   return (
+    
     <html lang="en">
       <title>YFC</title>
       <body className={inter.className}>
         <div className='xl:pt-16 md:pt-18 pt-32'>
           <Header />
         </div>
+        <CartProvider>
         <div className='xl:pt-16 md:pt-18 pt-32'>
           {children}
-        </div>
+        </div></CartProvider>
       </body>
     </html>
   )

@@ -1,135 +1,137 @@
-'use client'
+'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAllProducts } from '@/backend/lib/productAction'
+import { useAllProducts } from '@/backend/lib/productAction';
 import Image from 'next/image';
-import Loading from '@/app/loading'
-import Filters from '@/components/layouts/Filters'
+import Loading from '@/app/loading';
+import Filters from '@/components/layouts/Filters';
 import CustomPagination from "@/components/layouts/CustomPagination";
-import PhotoGallery from '@/components/PhotoGallery';
-import ProductItem from './ProductItem';
 
 export default function Product() {
-    const { data: products, isLoading, error } = useAllProducts();
-    const searchParams = useSearchParams();
-    const keyword = searchParams.get('keyword') || "";
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const resPerPage = 6; // Define how many items per page
+  const { data: products, isLoading, error } = useAllProducts();
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get('keyword') || "";
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const resPerPage = 6;
 
-    // Extract filters from searchParams
-    const minPrice = parseFloat(searchParams.get('min') || '0');
-    const maxPrice = parseFloat(searchParams.get('max') || 'Infinity');
-    const selectedCategories = searchParams.getAll('category');
-    const selectedRatings = searchParams.getAll('ratings').map(r => parseInt(r, 10));
-    const sortOrder = searchParams.get('sort') || '';
+  const minPrice = parseFloat(searchParams.get('min') || '0');
+  const maxPrice = parseFloat(searchParams.get('max') || 'Infinity');
+  const selectedCategories = searchParams.getAll('category');
+  const selectedRatings = searchParams.getAll('ratings').map(r => parseInt(r, 10));
+  const sortOrder = searchParams.get('sort') || '';
 
-    if (error) {
-      return <div>{error.message}</div>
-    }
-    
-    if (isLoading) {
-      return <Loading />
-    }
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
-    if (products?.length === 0) {
-      return (
-          <div className='flex justify-center items-center min-w-full min-h-screen'>
-              <div className='text-xl text-blue-400'>ไม่พบสินค้า</div>
-          </div>
-      )
-    }
+  if (isLoading) {
+    return <Loading />;
+  }
 
-    // Filter products based on keyword, price, category, and rating
-    const filteredProducts = products.filter(product => {
-      const matchesKeyword = product.productName.toLowerCase().includes(keyword.toLowerCase());
-      const price = parseFloat(product.price);
-      const matchesPrice = price >= minPrice && price <= maxPrice;
-      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-      const productRating = parseFloat(product.rating || '0');
-      const matchesRating = selectedRatings.length === 0 || selectedRatings.includes(Math.round(productRating));
+  if (products?.length === 0) {
+    return (
+      <div className='flex justify-center items-center min-w-full min-h-screen'>
+        <div className='text-xl text-blue-400'>ไม่พบสินค้า</div>
+      </div>
+    );
+  }
 
-      return matchesKeyword && matchesPrice && matchesCategory && matchesRating;
+  const filteredProducts = products.filter(product => {
+    const matchesKeyword = product.productName.toLowerCase().includes(keyword.toLowerCase());
+    const price = parseFloat(product.price);
+    const matchesPrice = price >= minPrice && price <= maxPrice;
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const productRating = parseFloat(product.rating || '0');
+    const matchesRating = selectedRatings.length === 0 || selectedRatings.includes(Math.round(productRating));
+
+    return matchesKeyword && matchesPrice && matchesCategory && matchesRating;
   });
 
-  // Sort products based on the sortOrder
   const sortedProducts = filteredProducts.sort((a, b) => {
-      const priceA = parseFloat(a.price);
-      const priceB = parseFloat(b.price);
+    const priceA = parseFloat(a.price);
+    const priceB = parseFloat(b.price);
 
-      if (sortOrder === 'price-asc') {
-          return priceA - priceB;
-      } else if (sortOrder === 'price-desc') {
-          return priceB - priceA;
-      }
-      return 0;
+    if (sortOrder === 'price-asc') {
+      return priceA - priceB;
+    } else if (sortOrder === 'price-desc') {
+      return priceB - priceA;
+    }
+    return 0;
   });
 
-  // Paginate products
   const displayedProducts = sortedProducts.slice((page - 1) * resPerPage, page * resPerPage);
   const productsCount = filteredProducts.length;
 
+  // Modified addToCart function
   const addToCart = (product) => {
-      const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
-      const productInCart = existingCart.cartItems.find(item => item.product === product._id);
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
+    const productInCart = existingCart.cartItems.find(item => item.product === product._id);
 
-      if (productInCart) {
-          // Update quantity if product already in cart
-          productInCart.quantity += 1;
-      } else {
-          // Add new product to cart
-          existingCart.cartItems.push({ ...product, quantity: 1 });
-      }
+    if (productInCart) {
+      productInCart.quantity += 1;
+    } else {
+      existingCart.cartItems.push({
+        product: product._id,
+        productName: product.productName,
+        price: product.price,
+        images: product.images,
+        quantity: 1
+      });
+    }
 
-      localStorage.setItem('cart', JSON.stringify(existingCart));
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    alert(`${product.productName} has been added to your cart`);
   };
-    return (
-      <div className="flex flex-col min-h-screen">
-        <header >
-          <main className="container mx-auto px-6 py-8">
-            <section className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800">ยินดีต้อนรับสู่ดินแดนไก่ทอด</h2>
-              <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
-            </section>
 
-            <div className="flex flex-col md:flex-row ">
-              <div className='lg:order-2 md:order-1 flex md:w-2/5 h-full'  >
-                <Filters />
-              </div>
+  return (
+    <div className="flex flex-col min-h-screen">
+      <header>
+        <main className="container mx-auto px-6 py-8">
+          <section className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800">ยินดีต้อนรับสู่ดินแดนไก่ทอด</h2>
+            <p className="text-gray-600 mt-4">โปรดเลือกไก่ของคุณ</p>
+          </section>
+
+          <div className="flex flex-col md:flex-row">
+            <div className='lg:order-2 md:order-1 flex md:w-2/5 h-full'>
+              <Filters />
+            </div>
 
             <main className="md:w-3/5 lg:w-9/15 px-3 w-full h-full">
-            <div className="lg:order-1 md:order-2 ">
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
-                
-                {displayedProducts.map((product, index) => (
-                  <div key={index} className="bg-white shadow-lg rounded-lg ">
-                    <Image 
-                        src={
-                          product?.images[0]
-                          ? product?.images[0].url
-                          : "/images/default_product.png"
-                        }
+              <div className="lg:order-1 md:order-2">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
+                  {displayedProducts.map((product) => (
+                    <div key={product._id} className="bg-white shadow-lg rounded-lg">
+                      <Image 
+                        src={product?.images[0]?.url || "/images/default_product.png"}
                         alt={product.productName}
                         width={500}
                         height={500}
-                    />
-                    <div className="p-4">
-                      <h4 className="text-lg font-semibold text-gray-800">{product.productName}</h4>
-                      <p className="text-gray-600 mt-2">{product.price} ฿</p>
-                      <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                      onClick={() => addToCart(product)}>Add to Cart</button>
+                      />
+                      <div className="p-4">
+                        <h4 className="text-lg font-semibold text-gray-800">{product.productName}</h4>
+                        <p className="text-gray-600 mt-2">{product.price} ฿</p>
+                        <button
+                          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                          onClick={() => addToCart(product)}
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}               
+                  ))}
+                </div>
               </div>
-            </div>
-            <CustomPagination
-              resPerPage={resPerPage}
-              productsCount={productsCount}
-            />   
             </main>
-            </div>
-          </main>
-        </header>
-      </div>
-    )
+          </div>
+        </main>
+
+        <CustomPagination
+          resPerPage={resPerPage}
+          productsCount={productsCount}
+          currentPage={page}
+        />
+      </header>
+    </div>
+  );
 }
