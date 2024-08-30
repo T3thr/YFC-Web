@@ -71,7 +71,7 @@ export default function Product() {
       productInCart.quantity += 1;
     } else {
       existingCart.cartItems.push({
-        product: product._id,
+        product: product.productSKU,
         productName: product.productName,
         price: product.price,
         images: product.images,
