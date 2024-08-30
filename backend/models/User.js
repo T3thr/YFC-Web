@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
@@ -31,19 +31,15 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Hash the password before saving the user
+// Hash the password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
-    return next();
+    next();
   }
+    
 
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
-// Compare entered password with hashed password in the database
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-export default mongoose.models?.User || mongoose.model("User", userSchema);
+const User = mongoose.models?.User || mongoose.model("User", userSchema);
+export default User

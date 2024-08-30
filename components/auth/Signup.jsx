@@ -79,7 +79,7 @@ const Signup = () => {
         <hr className="mt-4" />
 
         <p className="text-center mt-5">
-          Already have an account?
+          Already have an account?{" "}
           <Link href="/signin" className="text-blue-500">
             Sign in
           </Link>
