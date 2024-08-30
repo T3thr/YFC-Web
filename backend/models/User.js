@@ -31,12 +31,19 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Hash the password before saving the user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
 
   this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+// Compare entered password with hashed password in the database
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+export default mongoose.models?.User || mongoose.model("User", userSchema);

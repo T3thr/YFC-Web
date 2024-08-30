@@ -1,5 +1,5 @@
 import User from "@/models/User";
-import mongodbConnect from "@/lib/mongodb";
+import mongodbConnect from "@/backend/lib/mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -16,8 +16,9 @@ export async function POST(req) {
     );
   }
 
-  // Create new user
-  const user = await User.create({ name, email, password });
+  // Create new user with hashed password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({ name, email, password: hashedPassword });
 
   return NextResponse.json({
     user: {
