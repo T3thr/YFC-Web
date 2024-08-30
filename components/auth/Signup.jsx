@@ -21,7 +21,6 @@ const Signup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     signupUser({ name, email, password });
   };
 
@@ -49,7 +48,7 @@ const Signup = () => {
           <label className="block mb-1"> Email </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-            type="text"
+            type="email"
             placeholder="Type your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
