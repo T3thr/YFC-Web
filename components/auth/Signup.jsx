@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 const Signup = () => {
   const { error, signupUser, clearErrors } = useContext(AuthContext);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +20,13 @@ const Signup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    signupUser({ name, email, password });
+    signupUser({ name, email, password })
+      .then(() => {
+        toast.success("Signup successful! Please sign in.");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (

@@ -6,7 +6,6 @@ import bcrypt from "bcryptjs";
 
 export const options = {
   providers: [
-    // Configure the credentials provider for username/email and password authentication
     CredentialsProvider({
       name: "Username/Password",
       credentials: {
@@ -45,7 +44,6 @@ export const options = {
         };
       },
     }),
-    // Configure the Google provider for OAuth authentication
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -56,7 +54,6 @@ export const options = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Attach user data to the token if available
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -67,7 +64,6 @@ export const options = {
       return token;
     },
     async session({ session, token }) {
-      // Attach token data to the session
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
