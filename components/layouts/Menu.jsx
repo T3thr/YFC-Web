@@ -65,7 +65,7 @@ export default function Menu() {
             >
               <span className='flex lg:flex items-center ml-1'>
                 <FaShoppingCart className='flex text-gray-400 w-4 items-start mr-0' />
-                <span className='hidden ml-1 lg:flex'>
+                <span className=' ml-1 flex'>
                   <b>({cartCount})</b> {/* Update the cart count here */}
                 </span>
               </span>
