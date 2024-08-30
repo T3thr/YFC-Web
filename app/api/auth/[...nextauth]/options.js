@@ -1,49 +1,71 @@
-import CredentialsProvider from 'next-auth/providers/credentials'
-import GoogleProvider from 'next-auth/providers/google'
-import mongodbConnect from '@/backend/lib/mongodb'; // Import your MongoDB connection utility
-import User from '@/backend/models/User'; // Adjust path as needed
-import bcrypt from 'bcrypt';
-import { ObjectId } from 'mongodb';
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import User from "@/backend/models/User";
+import mongodbConnect from "@/backend/lib/mongodb";
+import bcrypt from "bcryptjs";
 
 export const options = {
     providers: [
-        // กำหนดการยืนยันตัวตนสำหรับใช้กับ username/password
-        CredentialsProvider({
-            name: 'Username/Password',
-            // กำหนดอินพุตในแบบฟอร์ม ซึ่งได้แก่ username และ password
-            credentials: {
-                username: {label:'Username', type:'text', placeholder:'username'},
-                password: {label:'Password', type:'password'}
-            },
-            // ฟังก์ชันสำหรับรีเทิร์นข้อมูลที่ต้องการไปให้กับผู้ใช้ เมื่อเข้าสู่ระบบแล้ว 
-            async authorize(credentials) {
-                await mongodbConnect();
-        
-                const user = await User.findOne({ email: credentials.username });
-                if (!user) {
-                  throw new Error('No user found with this email');
-                }
-        
-                const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-                if (!isValidPassword) {
-                  throw new Error('Incorrect password');
-                }
-        
-                return { id: user._id, name: user.name, email: user.email, image: user.image };
-              },
-            }),
-        // กำหนดการยืนยันตัวตนสำหรับใช้กับบัญชี google
-        GoogleProvider({
-            name: 'Google',
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        }),
+      CredentialsProvider({
+        name: "Credentials",
+        async authorize(credentials) {
+          // Connect to MongoDB
+          await mongodbConnect();
+  
+          // Find user by email in the database
+          const user = await User.findOne({ email: credentials.email }).select("+password");
+  
+          // If user is not found, throw an error
+          if (!user) {
+            throw new Error("No user found with this email");
+          }
+  
+          // Compare provided password with the stored hashed password
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+  
+          // If password is invalid, throw an error
+          if (!isPasswordValid) {
+            throw new Error("Invalid password");
+          }
+  
+          // Return user data without the password field
+          return {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            avatar: user.avatar,
+          };
+        },
+      }),
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      }),
     ],
-    pages: {
-        signIn: '/auth/signin',
-        signOut: '/auth/signout',
-        error: '/auth/error', // Error code passed in query string as ?error=
-        verifyRequest: '/auth/verify-request', // (used for check email message)
-        newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-      }
-}
+    session: {
+      jwt: true,
+    },
+    callbacks: {
+      async jwt({ token, user }) {
+        // If user data is available, attach it to the token
+        if (user) {
+          token.id = user.id;
+          token.name = user.name;
+          token.email = user.email;
+          token.role = user.role;
+          token.avatar = user.avatar;
+        }
+        return token;
+      },
+      async session({ session, token }) {
+        // Attach token data to the session
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.role = token.role;
+        session.user.avatar = token.avatar;
+        return session;
+      },
+    },
+  };
