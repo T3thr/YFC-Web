@@ -1,4 +1,4 @@
-import User from "@/models/User";
+import User from "@/backend/models/User";
 import mongodbConnect from "@/backend/lib/mongodb";
 import { NextResponse } from "next/server";
 
