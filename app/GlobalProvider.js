@@ -1,8 +1,6 @@
 "use client";
 
 import { AuthProvider } from "@/context/AuthContext";
-import { CartProvider } from "@/context/CartContext";
-import { OrderProvider } from "@/context/OrderContext";
 import { ProductProvider } from "@/context/ProductContext";
 import { SessionProvider } from "next-auth/react";
 

@@ -71,7 +71,7 @@ export default function Menu() {
             {/* Sign In/Out Logic */}
             {/* Profile Display */}
             <Link href='/profile'>
-              <div className='hidden lg:flex items-center mb-4 space-x-3 mt-4 cursor-pointer'>
+              <div className='lg:flex items-center mb-4 space-x-3 mt-4 cursor-pointer'>
                 <img
                   className='w-10 h-10 rounded-full'
                   src={'/images/default.png'}

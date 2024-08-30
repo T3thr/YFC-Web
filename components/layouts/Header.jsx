@@ -1,17 +1,7 @@
-import React, { useContext } from 'react';
-import Link from 'next/link';
-import Search from './Search';
-import Image from 'next/image';
-import { FaSearch } from 'react-icons/fa';
+import React from 'react';
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { getServerSession } from 'next-auth/next'
-import { FaHome } from 'react-icons/fa'
-import { FaShoppingCart } from "react-icons/fa";
-import { VscAccount } from "react-icons/vsc";
-import { IoIosLogIn } from "react-icons/io";
-import { IoLogOut } from "react-icons/io5";
 import NavBar from '@/components/NavBar';
-import CartContext from '@/context/CartContext';
 import Menu from './Menu'
 
 export default async function Header() {
