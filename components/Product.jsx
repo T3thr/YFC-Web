@@ -62,10 +62,10 @@ export default function Product() {
   const displayedProducts = sortedProducts.slice((page - 1) * resPerPage, page * resPerPage);
   const productsCount = filteredProducts.length;
 
-  // Modified addToCart function
   const addToCart = (product) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
-    const productInCart = existingCart.cartItems.find(item => item.product === product._id);
+
+    const productInCart = existingCart.cartItems.find(item => item.product === product.productSKU);
 
     if (productInCart) {
       productInCart.quantity += 1;
@@ -80,6 +80,10 @@ export default function Product() {
     }
 
     localStorage.setItem('cart', JSON.stringify(existingCart));
+
+    // Optionally, you can trigger a re-render in Menu to update the cart count
+    window.dispatchEvent(new Event("storage"));
+
     alert(`${product.productName} has been added to your cart`);
   };
 
@@ -101,22 +105,24 @@ export default function Product() {
               <div className="lg:order-1 md:order-2">
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
                   {displayedProducts.map((product) => (
-                    <div key={product._id} className="bg-white shadow-lg rounded-lg">
+                    <div key={product._id} className="flex flex-col bg-white shadow-lg rounded-lg">
                       <Image 
                         src={product?.images[0]?.url || "/images/default_product.png"}
                         alt={product.productName}
                         width={500}
                         height={500}
                       />
-                      <div className="p-4">
+                      <div className="p-4 flex flex-col flex-grow">
                         <h4 className="text-lg font-semibold text-gray-800">{product.productName}</h4>
                         <p className="text-gray-600 mt-2">{product.price} ฿</p>
+                      <div className='mt-auto'>
                         <button
-                          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                          className="w-full mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
                           onClick={() => addToCart(product)}
                         >
                           Add to Cart
                         </button>
+                      </div>
                       </div>
                     </div>
                   ))}

@@ -20,6 +20,8 @@ export default function Cart() {
   const updateCart = (updatedCart) => {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCart(updatedCart);
+    // Optionally, you can trigger a re-render in Menu to update the cart count
+    window.dispatchEvent(new Event("storage"));
   };
 
   const increaseQty = (cartItem) => {
@@ -123,8 +125,8 @@ export default function Cart() {
               )}
             </div>
 
-            <div className="flex flex-col md:flex-row sm:flew-row gap-12">
-              <main className="md:w-3/4">
+            <div className="flex flex-col md:flex-row sm:flex-row gap-12">
+              <main className="md:w-3/4 flex flex-col gap-1">
                 {cart.cartItems.map((cartItem) => (
                   <article
                     key={cartItem.product}

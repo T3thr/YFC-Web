@@ -23,8 +23,9 @@ export default async function NavBar() {
     <nav className=" fixed top-0 w-full flex flex-col lg:flex-row bg-red-100 p-0 shadow-gray-200 shadow-sm">
       <div className="container mx-auto flex flex-col lg:flex-row items-center lg:justify-between">
         {/* โลโก้ทางซ้าย */}
-        <div className="top-0 flex items-center ">
-          <h1 className="text-3xl font-bold text-gray-800">YOKYOK Fried Chicken</h1>
+        <div className=" top-0 flex items-center ">
+          <h1 className="hidden md:block text-3xl font-bold text-gray-800">YOKYOK Fried Chicken</h1>
+          <h1 className='block md:hidden text-3xl font-bold text-gray-800'>YFC</h1>
         </div>
         
         {/* เมนูหลัก */}

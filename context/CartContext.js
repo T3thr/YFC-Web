@@ -1,63 +1,33 @@
-"use client";
+'use client'
 
-import { createContext, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { createContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState({ cartItems: [] });
-
-  const router = useRouter();
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    setCartToState();
+    // Load cart items from localStorage or initialize an empty cart
+    const storedCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    setCartItems(storedCart);
   }, []);
 
-  const setCartToState = () => {
-    const storedCart = localStorage.getItem("cart");
-    setCart(storedCart ? JSON.parse(storedCart) : { cartItems: [] });
+  useEffect(() => {
+    // Update localStorage whenever cartItems changes
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = (product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
   };
 
-  const addItemToCart = async ({ product, name, price, image, stock }) => {
-    const item = { product, name, price, image, stock };
-
-    const isItemExist = cart.cartItems.find((i) => i.product === item.product);
-
-    let newCartItems;
-
-    if (isItemExist) {
-      newCartItems = cart.cartItems.map((i) =>
-        i.product === isItemExist.product ? item : i
-      );
-    } else {
-      newCartItems = [...cart.cartItems, item];
-    }
-
-    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
-    setCart({ cartItems: newCartItems });
-  };
-
-  const deleteItemFromCart = (id) => {
-    const newCartItems = cart.cartItems.filter((i) => i.product !== id);
-
-    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
-    setCart({ cartItems: newCartItems });
-  };
-
-  const getCartItemCount = () => {
-    return cart.cartItems.reduce((acc, item) => acc + 1, 0);
+  const clearCart = () => {
+    setCartItems([]);
   };
 
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        addItemToCart,
-        deleteItemFromCart,
-        getCartItemCount,
-      }}
-    >
+    <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
