@@ -46,6 +46,9 @@ export default async function NavBar() {
           {!session && <Wrapper><Link href='/api/auth/signin' className={` hidden lg:flex items-center`}>
             <IoIosLogIn className='mr-2'/>เข้าสู่ระบบ
             </Link></Wrapper>}
+            <Wrapper><Link href='/signup' className={` hidden lg:flex items-center`}>
+            ลงทะเบียน
+            </Link></Wrapper>
 
         </div> 
         </div>

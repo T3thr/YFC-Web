@@ -1,33 +1,100 @@
-'use client'
+"use client";
 
-import React, { createContext, useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { createContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
-    // Load cart items from localStorage or initialize an empty cart
-    const storedCart = JSON.parse(localStorage.getItem('cartItems')) || [];
-    setCartItems(storedCart);
+    setCartToState();
   }, []);
 
-  useEffect(() => {
-    // Update localStorage whenever cartItems changes
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+  const setCartToState = () => {
+    setCart(
+      localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart"))
+        : []
+    );
+  };
 
-  const addToCart = (product) => {
-    setCartItems((prevItems) => [...prevItems, product]);
+  const addItemToCart = async ({
+    product,
+    name,
+    price,
+    image,
+    stock,
+    seller,
+    quantity = 1,
+  }) => {
+    const item = {
+      product,
+      name,
+      price,
+      image,
+      stock,
+      seller,
+      quantity,
+    };
+
+    const isItemExist = cart?.cartItems?.find(
+      (i) => i.product === item.product
+    );
+
+    let newCartItems;
+
+    if (isItemExist) {
+      newCartItems = cart?.cartItems?.map((i) =>
+        i.product === isItemExist.product ? item : i
+      );
+    } else {
+      newCartItems = [...(cart?.cartItems || []), item];
+    }
+
+    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
+    setCartToState();
+  };
+
+  const deleteItemFromCart = (id) => {
+    const newCartItems = cart?.cartItems?.filter((i) => i.product !== id);
+
+    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
+    setCartToState();
+  };
+
+  const saveOnCheckout = ({ amount, tax, totalAmount }) => {
+    const checkoutInfo = {
+      amount,
+      tax,
+      totalAmount,
+    };
+
+    const newCart = { ...cart, checkoutInfo };
+
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    setCartToState();
+    router.push("/shipping");
   };
 
   const clearCart = () => {
-    setCartItems([]);
+    localStorage.removeItem("cart");
+    setCartToState();
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addItemToCart,
+        saveOnCheckout,
+        deleteItemFromCart,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

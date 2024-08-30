@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Search from './Search';
 import Image from 'next/image';
-import { options } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth/next';
 import { FaShoppingCart } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";

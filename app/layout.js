@@ -3,6 +3,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import mongodbConnect from '@/backend/lib/mongodb'
 import Header from '@/components/layouts/Header'
+import AuthProvider from '@/components/AuthProvider'; // Adjust the path as necessary
+import { GlobalProvider } from "./GlobalProvider";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,10 +25,11 @@ export default async function RootLayout({ children }) {
         <div className='xl:pt-16 md:pt-18 pt-32'>
           <Header />
         </div>
-        
+        <GlobalProvider>
         <div className='xl:pt-16 md:pt-18 pt-32'>
           {children}
         </div>
+        </GlobalProvider>
       </body>
     </html>
   )
