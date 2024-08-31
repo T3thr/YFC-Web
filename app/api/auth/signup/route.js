@@ -1,7 +1,8 @@
+// api/auth/signup/route.js
+
 import User from "@/backend/models/User";
 import mongodbConnect from "@/backend/lib/mongodb";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   await mongodbConnect();
@@ -17,17 +18,22 @@ export async function POST(req) {
     );
   }
 
-  // Hash the password before saving it
-  const hashedPassword = await bcrypt.hash(password, 10);
-  
-  // Create new user
-  const user = await User.create({ name, email, password: hashedPassword });
+  try {
+    // Create new user (password will be hashed by the model's pre-save hook)
+    const user = await User.create({ name, email, password });
 
-  return NextResponse.json({
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    },
-  });
+    return NextResponse.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        // Do not include password in the response
+      },
+    }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error creating user" },
+      { status: 500 }
+    );
+  }
 }

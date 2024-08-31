@@ -1,3 +1,5 @@
+// components/Signup.jsx
+
 "use client";
 
 import Link from "next/link";
@@ -20,13 +22,7 @@ const Signup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    signupUser({ name, email, password })
-      .then(() => {
-        toast.success("Signup successful! Please sign in.");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    signupUser({ name, email, password });
   };
 
   return (

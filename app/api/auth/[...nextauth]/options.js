@@ -7,26 +7,44 @@ import bcrypt from "bcryptjs";
 export const options = {
   providers: [
     CredentialsProvider({
-      name: "Username/Password",
+      name: "Credentials",
       credentials: {
-        username: { label: "Username or Email", type: "text", placeholder: "Enter your username or email" },
-        password: { label: "Password", type: "password" }
+        email: { label: "Email", type: "text", placeholder: "Enter your email" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         // Connect to MongoDB
         await mongodbConnect();
 
-        // Find user by either email or username
-        const user = await User.findOne({
-          $or: [{ email: credentials.username }, { username: credentials.username }]
-        }).select("+password");
+        // Find user by email
+        const user = await User.findOne({ email: credentials.email }).select("+password");
 
-        // If user is not found, throw an error
+        // If user is not found, check if it matches the admin credentials
         if (!user) {
-          throw new Error("No user found with this username or email");
+          const adminUser = {
+            userId: 'admin',
+            username: 'admin',
+            password: '123',
+            name: 'Admin',
+            email: 'jadmin@email.com',
+            image: 'asdfasdfasdf.jpg',
+          };
+
+          // Verify admin credentials
+          if (credentials?.email === adminUser.email && credentials?.password === adminUser.password) {
+            return {
+              id: adminUser.userId,
+              name: adminUser.name,
+              email: adminUser.email,
+              avatar: adminUser.image,
+              role: 'admin', // Assign role as admin
+            };
+          } else {
+            throw new Error("Incorrect email or password");
+          }
         }
 
-        // Compare provided password with the stored hashed password
+        // Compare provided password with the stored hashed password for normal users
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
 
         // If password is invalid, throw an error
@@ -39,7 +57,7 @@ export const options = {
           id: user._id,
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: user.role || 'user', // Default role for normal users
           avatar: user.avatar,
         };
       },
@@ -50,7 +68,7 @@ export const options = {
     }),
   ],
   session: {
-    jwt: true,
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -72,6 +90,10 @@ export const options = {
       return session;
     },
   },
+  pages: {
+    signIn: "/signin", // Specify custom signin page
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default options;

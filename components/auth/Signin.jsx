@@ -1,13 +1,16 @@
+// components/Signin.jsx
+
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
-import { signIn } from "next-auth/react";
+import React, { useState, useContext, useEffect } from "react";
+import AuthContext from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { parseCallbackUrl } from "@/helpers/helpers";
+import { parseCallbackUrl } from "@/helpers/helpers"; // Ensure this function is correctly implemented
 
 const Signin = () => {
+  const { error, loginUser, clearErrors } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,22 +18,19 @@ const Signin = () => {
   const params = useSearchParams();
   const callBackUrl = params.get("callbackUrl");
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearErrors();
+    }
+  }, [error]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    const data = await signIn("credentials", {
+    await loginUser({
       email,
       password,
-      callbackUrl: callBackUrl ? parseCallbackUrl(callBackUrl) : "/",
     });
-
-    if (data?.error) {
-      toast.error(data?.error);
-    }
-
-    if (data?.ok) {
-      router.push("/");
-    }
   };
 
   return (
@@ -45,7 +45,7 @@ const Signin = () => {
           <label className="block mb-1"> Email </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-            type="text"
+            type="email"
             placeholder="Type your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -70,17 +70,24 @@ const Signin = () => {
           type="submit"
           className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
         >
-          sign in
+          Sign in
         </button>
 
         <hr className="mt-4" />
 
         <p className="text-center mt-5">
           Don't have an account?{" "}
-          <Link href="/register" className="text-blue-500">
+          <Link href="/signup" className="text-blue-500">
             Register
           </Link>
         </p>
+        <p className="text-center mt-5">
+        Are you an admin?{" "}
+        <Link href="/api/auth/signin" className="text-blue-500">
+            Admin Login
+        </Link>
+        </p>
+
       </form>
     </div>
   );
