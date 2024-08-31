@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import connectToDB from '@/lib/db'; // Assuming you have a connection utility
-import Product from '@/models/Product'; // Path to your Product model
+import mongodbConnect from '@/backend/lib/mongodb'; // Assuming you have a connection utility
+import Product from '@/backend/models/Product'; // Path to your Product model
 import cloudinary from 'cloudinary';
 import multer from 'multer';
 import { NextRequest } from 'next/server';
@@ -23,7 +23,7 @@ export async function POST(req) {
     const files = formData.getAll('images'); // Get all images
 
     // Connect to the database
-    await connectToDB();
+    await mongodbConnect();
 
     // Find the product
     const product = await Product.findOne({ productSKU: sku });
