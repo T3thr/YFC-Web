@@ -194,15 +194,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const addNewAddress = async (address) => {
+  const addNewAddress = async (addressData) => {
     try {
-      const { data } = await axios.post(
-        `${process.env.API_URL}/api/address`,
-        address
-      );
-
-      if (data) {
-        router.push("/profile");
+      const { data } = await axios.post("/api/address", addressData);
+  
+      if (data.success) {
+        toast.success("Address added successfully");
+        // Optionally refresh the address list or navigate
       }
     } catch (error) {
       setError(error?.response?.data?.message);

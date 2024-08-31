@@ -48,7 +48,7 @@ export const options = {
         // ฟังก์ชันสำหรับรีเทิร์นข้อมูลที่ต้องการไปให้กับผู้ใช้ เมื่อเข้าสู่ระบบแล้ว 
         async authorize(credentials, request) {
             // ขอข้อมูลจากฐานข้อมูล
-            const admin = {
+            const user = {
                 id: 'admin',
                 username: 'admin',
                 password: '123456',
@@ -58,10 +58,10 @@ export const options = {
                 avatar: 'admin-avatar.jpg'
                 };
             // ตรวจสอบ username และ password ว่าถูกต้องหรือไม่
-            if (credentials?.username === admin.username && credentials?.password === admin.password) {
-                return admin;
+            if (credentials?.username === user.username && credentials?.password === user.password) {
+                return user;
                 } else {
-                throw new Error("Invalid username or password");
+                    return null
                 }
         },
     }),
