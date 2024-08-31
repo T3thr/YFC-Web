@@ -1,3 +1,4 @@
+// ProductItem.jsx
 import React from 'react';
 import EditProductButton from './EditProductButton';
 import DeleteProductButton from './DeleteProductButton';

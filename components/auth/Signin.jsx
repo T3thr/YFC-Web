@@ -9,11 +9,9 @@ import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const Signin = () => {
-  const { error, loginUser, adminSignIn, clearErrors } = useContext(AuthContext);
+  const { error, loginUser, clearErrors } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [adminUsername, setAdminUsername] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
 
   const router = useRouter();
   const params = useSearchParams();

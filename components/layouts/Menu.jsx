@@ -89,7 +89,7 @@ export default function Menu() {
                 />
                 <div className='space-y-1 font-medium'>
                   <p>
-                  {user?.name}
+                  {user ? user.name : 'GUEST'}
                     <time className='block text-sm text-gray-500 dark:text-gray-400'>
                         {user?.email}
                     </time>

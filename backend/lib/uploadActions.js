@@ -6,6 +6,8 @@ import os from 'os'
 import cloudinary from 'cloudinary'
 import { revalidatePath } from 'next/cache'
 import Photo from "@/backend/models/Photo"
+import Product from '@/backend/models/Product';
+import mongodbConnect from '@/backend/lib/mongodb'
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -51,17 +53,62 @@ export async function uploadPhotosToCloudinary(newFiles){
 const delay = (delayInms) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));
 }
-
+{/*}
 export async function uploadPhoto(formData){
     try {
-        // Save to temp directory
+        //save ลงในโฟลเดอร์ temp
         const newFiles = await savePhotosToLocal(formData)
 
-        // Upload to Cloudinary
+        // upload รูปลง cloudinary เมื่อรูปเซฟใน temp
         const photos = await uploadPhotosToCloudinary(newFiles)
 
+        // เมื่อ upload เสร็จจะลบไฟล์ใน temp
+        newFiles.map(file => fs.unlink( file.filepath ))
+
+        // delay ประมาณ 2 วิ
+        // จากนั้น call getAllPhoto()
+        //await delay(2000)
+
+        // บันทึกรูปลง mongo
+        // Save image info to MongoDB
+        const newPhotos = photos.map(photo => {
+            const newPhoto = new Photo({
+                public_id: photo.public_id,
+                secure_url: photo.secure_url
+            });
+            return newPhoto;
+        });
+
+        await Photo.insertMany(newPhotos)
+        
+        // Return photo data for the frontend
+        return {
+            data: photos.map(photo => ({
+                url: photo.secure_url, // or any other URL field
+                public_id: photo.public_id
+            })),
+            msg: 'Upload Success'
+        };
+        //revalidatePath('/')
+        //return { msg: 'Upload Success'}
+
+    } catch (error) {
+        return { errMsg: error.message }
+    }
+}
+*/}
+export async function uploadPhoto(formData, sku) {
+    try {
+        await mongodbConnect(); // Ensure the database is connected
+
+        // Save to temp directory
+        const newFiles = await savePhotosToLocal(formData);
+
+        // Upload to Cloudinary
+        const photos = await uploadPhotosToCloudinary(newFiles);
+
         // Delete temp files
-        await Promise.all(newFiles.map(file => fs.unlink(file.filepath)))
+        await Promise.all(newFiles.map(file => fs.unlink(file.filepath)));
 
         // Save image info to MongoDB
         const newPhotos = photos.map(photo => ({
@@ -69,15 +116,12 @@ export async function uploadPhoto(formData){
             secure_url: photo.secure_url
         }));
 
-        // Save to MongoDB
-        await Photo.insertMany(newPhotos)
-
         // Update the Product with new image
         await Product.findOneAndUpdate(
             { productSKU: sku },
             { $push: { images: { $each: newPhotos } } },
             { new: true }
-        )
+        );
 
         // Return photo data for the frontend
         return {
@@ -89,9 +133,10 @@ export async function uploadPhoto(formData){
         };
 
     } catch (error) {
-        return { errMsg: error.message }
-    }
+        return { errMsg: error.message };
 }
+}
+
 
 export async function getAllPhotos(){
     try {
@@ -111,7 +156,7 @@ export async function getAllPhotos(){
         return { errMsg: error.message }
     }
 }
-
+{/*
 export async function deletePhoto(public_id){
     try {
         await Promise.all ([
@@ -125,7 +170,11 @@ export async function deletePhoto(public_id){
         return { errMsg: error.message }
     }
 }
+*/}
 
+  
 export async function revalidate(path) {
     revalidatePath(path)
 }
+    
+
