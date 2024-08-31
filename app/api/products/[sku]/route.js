@@ -63,7 +63,7 @@ export async function DELETE(request, { params }) {
             };
             return NextResponse.json(productData);
         }
-        return NextResponse.json({ message: 'No Product Deleted' });
+        return NextResponse.json({ message: 'Product Not Found' });
     } catch (error) {
         return NextResponse.json({ message: error.message });
     }
