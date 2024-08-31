@@ -1,5 +1,6 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext } from 'react';
+import { useSession } from "next-auth/react"
 import Link from 'next/link';
 import Search from './Search';
 import Image from 'next/image';
@@ -7,6 +8,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
+import AuthContext from "@/context/AuthContext";
 
 // Utility function to count items in the cart
 const countCartItems = (cart) => {
@@ -16,6 +18,15 @@ const countCartItems = (cart) => {
 
 export default function Menu() {
     const [cartCount, setCartCount] = useState(0);
+    const { user, setUser } = useContext(AuthContext);
+
+    const { data } = useSession();
+  
+    useEffect(() => {
+      if (data) {
+        setUser(data?.user);
+      }
+    }, [data]);
 
     useEffect(() => {
         const updateCartCount = () => {
@@ -78,9 +89,9 @@ export default function Menu() {
                 />
                 <div className='space-y-1 font-medium'>
                   <p>
-                    USER
+                  {user?.name}
                     <time className='block text-sm text-gray-500 dark:text-gray-400'>
-                      test@gmail.com
+                        {user?.email}
                     </time>
                   </p>
                 </div>

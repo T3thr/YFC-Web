@@ -1,41 +1,36 @@
-// pages/api/photos.js
-
-import { uploadPhoto, getAllPhotos, deletePhoto } from '@/backend/lib/uploadActions';
+// app/api/photos/route.js
 import { NextResponse } from 'next/server';
-
-export async function GET() {
-    try {
-        const photos = await getAllPhotos();
-        return NextResponse.json(photos);
-    } catch (error) {
-        return NextResponse.json({ errMsg: error.message }, { status: 500 });
-    }
-}
+import cloudinary from '@/backend/lib/cloudinary';
+import Product from '@/backend/models/Product';
+import Photo from '@/backend/models/Photo';
 
 export async function POST(request) {
-    try {
-        const formData = await request.formData();
-        const response = await uploadPhoto(formData);
+    const formData = await request.formData();
+    const sku = formData.get('sku');
+    const file = formData.get('files');
 
-        if (response?.errMsg) {
-            return NextResponse.json({ errMsg: response.errMsg }, { status: 400 });
-        }
-        return NextResponse.json(response, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ errMsg: error.message }, { status: 500 });
+    if (!file || !sku) {
+        return NextResponse.json({ errMsg: 'Missing required fields' });
     }
-}
 
-export async function DELETE(request) {
     try {
-        const { public_id } = await request.json();
-        const response = await deletePhoto(public_id);
+        const uploadedImage = await cloudinary.uploader.upload(file.path, {
+            folder: `products/${sku}`,
+        });
 
-        if (response?.errMsg) {
-            return NextResponse.json({ errMsg: response.errMsg }, { status: 400 });
-        }
-        return NextResponse.json(response, { status: 200 });
+        const photo = await Photo.create({
+            public_id: uploadedImage.public_id,
+            secure_url: uploadedImage.secure_url,
+        });
+
+        const product = await Product.findOneAndUpdate(
+            { productSKU: sku },
+            { $push: { images: photo._id } },
+            { new: true }
+        ).populate('images');
+
+        return NextResponse.json({ msg: 'Image uploaded successfully', product });
     } catch (error) {
-        return NextResponse.json({ errMsg: error.message }, { status: 500 });
+        return NextResponse.json({ errMsg: 'Error uploading image: ' + error.message });
     }
 }

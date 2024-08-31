@@ -54,41 +54,39 @@ const delay = (delayInms) => {
 
 export async function uploadPhoto(formData){
     try {
-        //save ลงในโฟลเดอร์ temp
+        // Save to temp directory
         const newFiles = await savePhotosToLocal(formData)
 
-        // upload รูปลง cloudinary เมื่อรูปเซฟใน temp
+        // Upload to Cloudinary
         const photos = await uploadPhotosToCloudinary(newFiles)
 
-        // เมื่อ upload เสร็จจะลบไฟล์ใน temp
-        newFiles.map(file => fs.unlink( file.filepath ))
+        // Delete temp files
+        await Promise.all(newFiles.map(file => fs.unlink(file.filepath)))
 
-        // delay ประมาณ 2 วิ
-        // จากนั้น call getAllPhoto()
-        //await delay(2000)
-
-        // บันทึกรูปลง mongo
         // Save image info to MongoDB
-        const newPhotos = photos.map(photo => {
-            const newPhoto = new Photo({
-                public_id: photo.public_id,
-                secure_url: photo.secure_url
-            });
-            return newPhoto;
-        });
+        const newPhotos = photos.map(photo => ({
+            public_id: photo.public_id,
+            secure_url: photo.secure_url
+        }));
 
+        // Save to MongoDB
         await Photo.insertMany(newPhotos)
-        
+
+        // Update the Product with new image
+        await Product.findOneAndUpdate(
+            { productSKU: sku },
+            { $push: { images: { $each: newPhotos } } },
+            { new: true }
+        )
+
         // Return photo data for the frontend
         return {
             data: photos.map(photo => ({
-                url: photo.secure_url, // or any other URL field
+                url: photo.secure_url,
                 public_id: photo.public_id
             })),
             msg: 'Upload Success'
         };
-        //revalidatePath('/')
-        //return { msg: 'Upload Success'}
 
     } catch (error) {
         return { errMsg: error.message }

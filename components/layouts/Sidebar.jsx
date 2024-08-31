@@ -64,7 +64,7 @@ const Sidebar = () => {
         <li>
           {" "}
           <Link
-            href="/me"
+            href="/profile"
             className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
           >
             Your Profile
@@ -73,7 +73,7 @@ const Sidebar = () => {
         <li>
           {" "}
           <Link
-            href="/me/orders"
+            href="/profile/orders"
             className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
           >
             Orders
@@ -82,7 +82,7 @@ const Sidebar = () => {
         <li>
           {" "}
           <Link
-            href="/me/update"
+            href="/profile/update"
             className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
           >
             Update Profile
@@ -91,7 +91,7 @@ const Sidebar = () => {
         <li>
           {" "}
           <Link
-            href="/me/update_password"
+            href="/profile/update_password"
             className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
           >
             Update Password

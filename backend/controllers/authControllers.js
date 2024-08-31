@@ -1,63 +1,30 @@
-import User from "./models/User";
-import { uploads } from "./lib/cloudinary";
-import fs from "fs";
-import ErrorHandler from "../utils/errorHandler";
+// backend/controllers/authControllers.js
+
+import User from "../models/User";  // Corrected path
 import bcrypt from "bcryptjs";
+import ErrorHandler from "../utils/errorHandler";
 
-export const signupUser = async (req, res) => {
-  const { name, email, password } = req.body;
+// Hashing password before saving user
+export const registerUser = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-  });
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
-  res.status(201).json({
-    user,
-  });
-};
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      avatar: {
+        url: "/images/default.png", // Set default avatar
+      },
+    });
 
-export const updateProfile = async (req, res) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
-
-  if (req.files.length > 0) {
-    const uploader = async (path) => await uploads(path, "buyitnow/avatars");
-
-    const file = req.files[0];
-    const { path } = file;
-
-    const avatarResponse = await uploader(path);
-    fs.unlinkSync(path);
-    newUserData.avatar = avatarResponse;
+    res.status(201).json({
+      success: true,
+      user,  // Return the user data
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Failed to register user", 500));
   }
-
-  const user = await User.findByIdAndUpdate(req.user._id, newUserData);
-
-  res.status(200).json({
-    user,
-  });
-};
-
-export const updatePassword = async (req, res, next) => {
-  const user = await User.findById(req.user._id).select("+password");
-
-  const isPasswordMatched = await bcrypt.compare(
-    req.body.currentPassword,
-    user.password
-  );
-
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("Old password is incorrect", 400));
-  }
-
-  user.password = req.body.newPassword;
-  await user.save();
-
-  res.status(200).json({
-    sucess: true,
-  });
 };

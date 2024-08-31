@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-// fetcher function
+// Fetcher function
 async function fetcher(url) {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) {
@@ -9,24 +9,24 @@ async function fetcher(url) {
     return res.json();
 }
 
-// fetch สินค้าด้วย SKU
+// Fetch product by SKU
 export function useProductBySKU(sku) {
-    const { data, error, mutate } = useSWR(`/api/products/${sku}`, fetcher);
+    const { data, error, mutate } = useSWR(sku ? `/api/products/${sku}` : null, fetcher);
 
     return {
-        data,
+        data: data || { images: [] }, // Ensure data is defined
         isLoading: !data && !error,
         mutate,
         error
     };
 }
 
-// fetch สินค้าให้โชว์ในเว็บ
+// Fetch all products
 export function useAllProducts() {
     const { data, error } = useSWR('/api/products', fetcher);
 
     return {
-        data,
+        data: data || [], // Ensure data is defined
         isLoading: !data && !error,
         error
     };

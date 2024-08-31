@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import ErrorHandler from "./lib/errorHandler";
+import ErrorHandler from "@/backend/lib/errorHandler";
 
 const isAuthenticatedUser = async (req, res, next) => {
   const session = await getSession({ req });

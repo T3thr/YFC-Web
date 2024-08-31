@@ -7,12 +7,13 @@ import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { parseCallbackUrl } from "@/helpers/helpers"; // Ensure this function is correctly implemented
 
 const Signin = () => {
-  const { error, loginUser, clearErrors } = useContext(AuthContext);
+  const { error, loginUser, adminSignIn, clearErrors } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [adminUsername, setAdminUsername] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
 
   const router = useRouter();
   const params = useSearchParams();
@@ -25,12 +26,16 @@ const Signin = () => {
     }
   }, [error]);
 
-  const submitHandler = async (e) => {
+  const submitUserHandler = async (e) => {
     e.preventDefault();
-    await loginUser({
-      email,
-      password,
-    });
+    await loginUser({ email, password });
+    router.push("/"); // Navigate after the toast disappears
+  };
+
+  const submitAdminHandler = async (e) => {
+    e.preventDefault();
+
+    router.push("/api/auth/signin"); // Navigate after the toast disappears
   };
 
   return (
@@ -38,8 +43,8 @@ const Signin = () => {
       style={{ maxWidth: "480px" }}
       className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
     >
-      <form onSubmit={submitHandler}>
-        <h2 className="mb-5 text-2xl font-semibold">Login</h2>
+      <form onSubmit={submitUserHandler}>
+        <h2 className="mb-5 text-2xl font-semibold">User Login</h2>
 
         <div className="mb-4">
           <label className="block mb-1"> Email </label>
@@ -59,7 +64,6 @@ const Signin = () => {
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="password"
             placeholder="Type your password"
-            minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -67,27 +71,34 @@ const Signin = () => {
         </div>
 
         <button
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 w-full"
           type="submit"
-          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
         >
-          Sign in
+          Sign In
         </button>
 
-        <hr className="mt-4" />
-
-        <p className="text-center mt-5">
-          Don't have an account?{" "}
-          <Link href="/signup" className="text-blue-500">
-            Register
+        <div className="mt-4">
+          <Link
+            href="/signup"
+            className="text-blue-500 hover:underline"
+          >
+            Don’t have an account? Sign up
           </Link>
-        </p>
-        <p className="text-center mt-5">
-        Are you an admin?{" "}
-        <Link href="/api/auth/signin" className="text-blue-500">
-            Admin Login
-        </Link>
-        </p>
+        </div>
+      </form>
 
+      <hr className="my-5" />
+
+      <form onSubmit={submitAdminHandler}>
+        <h2 className="mb-5 text-2xl font-semibold">Admin Login</h2>
+
+
+        <button
+          className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 w-full"
+          type="submit"
+        >
+          go to Admin Sign In
+        </button>
       </form>
     </div>
   );

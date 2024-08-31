@@ -8,7 +8,7 @@ const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false); // Set initial loading state to false
   const [updated, setUpdated] = useState(false);
 
   const router = useRouter();
@@ -60,10 +60,11 @@ export const ProductProvider = ({ children }) => {
 
       if (data?.data) {
         setLoading(false);
-        router.replace("/admin/products");
+        router.replace(`/admin/products/${id}`); // Navigate to the product page after successful upload
       }
     } catch (error) {
       setError(error?.response?.data?.message);
+      setLoading(false); // Stop loading on error
     }
   };
 
@@ -96,7 +97,6 @@ export const ProductProvider = ({ children }) => {
         uploadProductImages,
         updateProduct,
         deleteProduct,
-
         clearErrors,
       }}
     >

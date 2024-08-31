@@ -9,8 +9,10 @@ export default async function NavBar() {
   // ตรวจสอบว่าได้เข้าสู่ระบบแล้ว และมีข้อมูลผู้ใช้ 
   if(session && session.user) {
     // กำหนดปุ่ม Sign Out เพื่อสั่งให้ออกจากระบบ
+    const addresses = await getAddresses();
     return (
         <div className='flex flex-col justify-start items-center mx-auto h-screen my-5'>
+          <Profile addresses={addresses} />
             <div className='text-3xl'>{session.user?.name}</div>
             <div className='text-2xl text-gray-500'>{session.user?.email}</div>
             <Link 

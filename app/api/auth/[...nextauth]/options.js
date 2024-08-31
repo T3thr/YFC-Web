@@ -6,65 +6,85 @@ import bcrypt from "bcryptjs";
 
 export const options = {
   providers: [
+    // User credentials provider
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "text", placeholder: "Enter your email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        // Connect to MongoDB
-        await mongodbConnect();
-
-        // Find user by email
-        const user = await User.findOne({ email: credentials.email }).select("+password");
-
-        // If user is not found, check if it matches the admin credentials
-        if (!user) {
-          const adminUser = {
-            userId: 'admin',
-            username: 'admin',
-            password: '123',
-            name: 'Admin',
-            email: 'jadmin@email.com',
-            image: 'asdfasdfasdf.jpg',
-          };
-
-          // Verify admin credentials
-          if (credentials?.email === adminUser.email && credentials?.password === adminUser.password) {
+        name: "User Credentials",
+        credentials: {
+            email: { label: "Email", type: "text", placeholder: "Enter your email" },
+            password: { label: "Password", type: "password" },
+        },
+        async authorize(credentials) {
+            await mongodbConnect();
+    
+            const user = await User.findOne({ email: credentials.email }).select("+password");
+    
+            if (!user) {
+            throw new Error("No user found with this email");
+            }
+    
+            const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+    
+            if (!isPasswordValid) {
+            throw new Error("Incorrect password");
+            }
+    
             return {
-              id: adminUser.userId,
-              name: adminUser.name,
-              email: adminUser.email,
-              avatar: adminUser.image,
-              role: 'admin', // Assign role as admin
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,  // Ensure this is included in the user model
+            avatar: user.avatar,
             };
-          } else {
-            throw new Error("Incorrect email or password");
-          }
-        }
-
-        // Compare provided password with the stored hashed password for normal users
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-
-        // If password is invalid, throw an error
-        if (!isPasswordValid) {
-          throw new Error("Incorrect password");
-        }
-
-        // Return user data without the password field
-        return {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role || 'user', // Default role for normal users
-          avatar: user.avatar,
-        };
-      },
+        },
+        }),
+    // กำหนดการยืนยันตัวตนสำหรับใช้กับ username/password
+    CredentialsProvider({
+        name: "Admin Credentials",
+        // กำหนดอินพุตในแบบฟอร์ม ซึ่งได้แก่ username และ password  
+        credentials: {
+          username: { label: "Username", type: "text", placeholder: "Enter your username" },
+          password: { label: "Password", type: "password" },
+        },
+        // ฟังก์ชันสำหรับรีเทิร์นข้อมูลที่ต้องการไปให้กับผู้ใช้ เมื่อเข้าสู่ระบบแล้ว 
+        async authorize(credentials, request) {
+            // ขอข้อมูลจากฐานข้อมูล
+            const admin = {
+                id: 'admin',
+                username: 'admin',
+                password: '123456',
+                name: 'Admin User',
+                email: 'admin@yokyok.com',
+                role: 'admin',
+                avatar: 'admin-avatar.jpg'
+                };
+            // ตรวจสอบ username และ password ว่าถูกต้องหรือไม่
+            if (credentials?.username === admin.username && credentials?.password === admin.password) {
+                return admin;
+                } else {
+                throw new Error("Invalid username or password");
+                }
+        },
     }),
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      async authorize(credentials) {
+        // Implement Google OAuth logic to determine if user is admin
+        const user = await User.findOne({ email: credentials.email }).select("+password");
+
+        if (user && user.role === 'admin') {
+          return {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            avatar: user.avatar,
+          };
+        }
+
+        return null;  // No access for non-admins
+      }
     }),
   ],
   session: {
@@ -90,9 +110,7 @@ export const options = {
       return session;
     },
   },
-  pages: {
-    signIn: "/signin", // Specify custom signin page
-  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 
