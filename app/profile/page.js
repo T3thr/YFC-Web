@@ -14,13 +14,7 @@ export default async function NavBar() {
             <div className='text-3xl'>{session.user?.name}</div>
             <div className='text-2xl text-gray-500'>{session.user?.email}</div>
 
-            {/* Add New Address Button */}
-            <Link 
-            href='/address/new'
-            className='my-6 bg-green-600 text-white rounded-md py-2 px-4 shadow-md hover:bg-green-700 transition-colors'
-            >
-              Add New Address
-            </Link>
+
         </div>
     )
   }

@@ -75,14 +75,14 @@ export default function Cart() {
     setEditMode(false);
   };
 
-  const amountWithoutTax = cart.cartItems.reduce(
+  const amountWithoutShip = cart.cartItems.reduce(
     (acc, item) => acc + item.quantity * item.price,
     0
   );
 
-  const taxAmount = (100).toFixed(2);
+  const shipAmount = (100).toFixed(2);
   //const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
-  const totalAmount = (Number(amountWithoutTax) + Number(taxAmount)).toFixed(2);
+  const totalAmount = (Number(amountWithoutShip) + Number(shipAmount)).toFixed(2);
 
   return (
     <>
@@ -195,11 +195,11 @@ export default function Cart() {
                   <h3 className="text-lg font-semibold mb-4 text-gray-800">Order Summary</h3>
                   <div className="flex justify-between mb-4 text-gray-700">
                     <span>ราคา</span>
-                    <span>{amountWithoutTax.toFixed(2)} ฿</span>
+                    <span>{amountWithoutShip.toFixed(2)} ฿</span>
                   </div>
                   <div className="flex justify-between mb-4 text-gray-700">
                     <span>ค่าส่ง </span>
-                    <span>{taxAmount} ฿</span>
+                    <span>{shipAmount} ฿</span>
                   </div>
                   <div className="flex justify-between font-semibold text-xl mb-4 text-gray-900">
                     <span>ยอดรวม</span>

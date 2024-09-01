@@ -1,20 +1,32 @@
 // app/api/checkout/route.js
+import Order from '@/backend/models/Order';
+import Product from '@/backend/models/Product';
+import mongodbConnect from '@/backend/lib/mongodb';
 
-import { NextResponse } from 'next/server';
-
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const { cartItems, totalAmount } = await request.json();
+    await mongodb(); // Ensure the database connection
 
-    // Here, you would typically send the order data to an admin or save it to a database
-    console.log('Order received:', cartItems, 'Total Amount:', totalAmount);
+    const { cartItems, totalAmount } = await req.json();
+    const userId = req.cookies.userId; // Get the user ID from cookies or session
 
-    // Simulate sending data to an admin (e.g., via email or a backend service)
-    // ...
+    if (!userId) {
+      return new Response('Unauthorized', { status: 401 });
+    }
 
-    return NextResponse.json({ message: 'Order processed successfully' });
+    // Create the order
+    const order = await Order.create({
+      userId,
+      cartItems: cartItems.map(item => ({
+        product: item.product,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      totalAmount,
+    });
+
+    return new Response(JSON.stringify(order), { status: 201 });
   } catch (error) {
-    console.error('Error processing order:', error);
-    return NextResponse.json({ error: 'Failed to process the order' }, { status: 500 });
+    return new Response('Error creating order', { status: 500 });
   }
 }

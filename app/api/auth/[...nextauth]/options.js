@@ -65,30 +65,27 @@ export const options = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             async authorize(credentials) {
                 await mongodbConnect();
-                const profile = credentials.profile; // Google profile information
-                
-                // Fetch user from the database based on email
-                const user = await User.findOne({ email: profile.email }).select("+password");
 
-                // Check if the user is an admin
-                if (user && user.role === 'admin') {
                     return {
                         id: user._id,
                         name: user.name,
                         email: user.email,
-                        role: user.role,
+                        role: 'admin',
                         avatar: user.avatar,
                     };
                 }
-
-                return null;  // No access for non-admins
-            }
         }),
     ],
     session: {
         strategy: "jwt",
     },
     callbacks: {
+        async signIn({ user, account, profile }) {
+            if (account.provider === 'google') {
+                user.role = 'admin';
+            }
+            return true;
+        },
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
