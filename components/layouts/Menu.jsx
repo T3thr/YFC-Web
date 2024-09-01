@@ -10,7 +10,7 @@ import { IoLogOut } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
 import AuthContext from "@/context/AuthContext";
 
-// Utility function to count items in the cart
+// ฟังก์ชันนับตะกร้า
 const countCartItems = (cart) => {
   return cart?.cartItems?.reduce((total, item) => total + item.quantity, 0) || 0;
 };

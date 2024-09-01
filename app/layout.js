@@ -3,8 +3,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import mongodbConnect from '@/backend/lib/mongodb'
 import Header from '@/components/layouts/Header'
-import AuthProvider from '@/components/AuthProvider'; // Adjust the path as necessary
-import { GlobalProvider } from "./GlobalProvider";
+import AuthProvider from '@/components/AuthProvider'
+import { GlobalProvider } from "./GlobalProvider"
 
 const inter = Inter({ subsets: ['latin'] })
 
