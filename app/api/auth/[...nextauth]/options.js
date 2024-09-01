@@ -65,8 +65,12 @@ export const options = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             async authorize(credentials) {
                 await mongodbConnect();
-                const user = await User.findOne({ email: credentials.email }).select("+password");
+                const profile = credentials.profile; // Google profile information
+                
+                // Fetch user from the database based on email
+                const user = await User.findOne({ email: profile.email }).select("+password");
 
+                // Check if the user is an admin
                 if (user && user.role === 'admin') {
                     return {
                         id: user._id,
