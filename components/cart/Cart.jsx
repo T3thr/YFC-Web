@@ -20,7 +20,7 @@ export default function Cart() {
   const updateCart = (updatedCart) => {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCart(updatedCart);
-    // Optionally, you can trigger a re-render in Menu to update the cart count
+    // อัพเดท รายการในตะกร้า เรียลไทม์
     window.dispatchEvent(new Event("storage"));
   };
 
@@ -52,7 +52,7 @@ export default function Cart() {
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
-    setSelectedItems([]); // Clear selected items when toggling edit mode
+    setSelectedItems([]); // ตั้งจำนวนการเลือกเป็น 0 เมื่อกดแก้ไขรายการ
   };
 
   const handleSelectItem = (product) => {
@@ -90,11 +90,11 @@ export default function Cart() {
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg shadow-black">
-              Your Cart ({cart.cartItems.length} Item{cart.cartItems.length !== 1 && 's'})
+              ตะกร้าของคุณ ({cart.cartItems.length} Item(s){cart.cartItems.length !== 1 && 's'})
             </h2>
             <Link href="/checkout">
               <button className="bg-white text-purple-600 py-2 px-6 rounded-lg shadow-lg hover:bg-purple-600 hover:text-white transition duration-300">
-                Proceed to Checkout
+                ไปยังหน้าชำระเงิน
               </button>
             </Link>
           </div>
@@ -113,14 +113,14 @@ export default function Cart() {
                   editMode ? 'bg-red-600' : 'bg-yellow-500'
                 } transition duration-300`}
               >
-                {editMode ? 'Cancel' : 'Edit'}
+                {editMode ? 'ยกเลิก' : 'แก้ไข'}
               </button>
               {editMode && selectedItems.length > 0 && (
                 <button
                   onClick={deleteSelectedItems}
                   className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-red-600 transition duration-300"
                 >
-                  Delete Selected Items
+                  ลบรายการที่เลือก
                 </button>
               )}
             </div>
@@ -150,7 +150,7 @@ export default function Cart() {
                       <figure className="flex leading-5">
                         <div className="block w-24 h-24 rounded border border-gray-200 overflow-hidden shadow-lg">
                           <img
-                            src={cartItem.images[0] || '/images/default_product.png'}
+                            src={cartItem?.images[0]?.secure_url || '/images/default_product.png'}
                             alt={cartItem.productName}
                             className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-110"
                           />

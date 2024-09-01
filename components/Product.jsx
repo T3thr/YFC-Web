@@ -106,13 +106,13 @@ export default function Product() {
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10">
                   {displayedProducts.map((product) => (
                     <div key={product._id} className="flex flex-col bg-white shadow-lg rounded-lg">
-        <Image
-          src={product?.images[0]?.secure_url || "/images/default_product.png"}
-          alt={product.productName}
-          className="w-full h-56 object-cover object-center"
-          height="120"
-          width="120"
-        />
+                      <Image
+                        src={product?.images[0]?.secure_url || "/images/default_product.png"}
+                        alt={product.productName}
+                        className="w-full h-56 object-cover object-center"
+                        height="120"
+                        width="120"
+                      />
                       <div className="p-4 flex flex-col flex-grow">
                         <h4 className="text-lg font-semibold text-gray-800">{product.productName}</h4>
                         <p className="text-gray-600 mt-2">{product.price} ฿</p>

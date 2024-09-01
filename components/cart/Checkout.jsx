@@ -21,7 +21,7 @@ export default function Checkout() {
     (acc, item) => acc + item.quantity * item.price,
     0
   );
-  const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
+  const taxAmount = (100).toFixed(2);
   const totalAmount = (Number(amountWithoutTax) + Number(taxAmount)).toFixed(2);
 
   const handleCheckout = async () => {
@@ -42,15 +42,15 @@ export default function Checkout() {
         throw new Error('Failed to process the order');
       }
 
-      // Clear the cart
+      // เคลียร์ตะกร้า
       localStorage.removeItem('cart');
       setCart({ cartItems: [] });
 
-      // Redirect to a confirmation or thank you page
+      // แสดงหน้าต่างขอบคุณลูกค้า
       router.push('/confirmation');
     } catch (error) {
       console.error('Error:', error);
-      // Handle error (e.g., show an error message to the user)
+      // error message
     } finally {
       setIsProcessing(false);
     }
@@ -84,7 +84,7 @@ export default function Checkout() {
                       <figure className="flex leading-5">
                         <div className="block w-24 h-24 rounded border border-gray-200 overflow-hidden shadow-lg">
                           <img
-                            src={cartItem.images[0] || '/images/default_product.png'}
+                            src={cartItem?.images[0]?.secure_url || '/images/default_product.png'}
                             alt={cartItem.productName}
                             className="w-full h-full object-cover"
                           />
@@ -126,9 +126,9 @@ export default function Checkout() {
                   >
                     Check Bills
                   </button>
-                  <Link href="/cart">
+                  <Link href="/carts">
                     <button className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition duration-300 shadow-md">
-                      Back to Cart
+                      กลับไปยังตะกร้า
                     </button>
                   </Link>
                 </div>
