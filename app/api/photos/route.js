@@ -1,6 +1,6 @@
 // app/api/photos/route.js
 import { NextResponse } from 'next/server';
-import cloudinary from '@/backend/lib/cloudinary';
+import cloudinary from 'cloudinary';
 import Product from '@/backend/models/Product';
 import Photo from '@/backend/models/Photo';
 
