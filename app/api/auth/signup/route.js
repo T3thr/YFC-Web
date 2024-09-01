@@ -21,6 +21,7 @@ export async function POST(req) {
   try {
     // Create new user (password will be hashed by the model's pre-save hook)
     const user = await User.create({ name, email, password });
+    
 
     return NextResponse.json({
       user: {
@@ -30,6 +31,14 @@ export async function POST(req) {
         // Do not include password in the response
       },
     }, { status: 201 });
+    
+    if (response.status === 201) {
+        toast.success("Signup successful! Please sign in to continue.", {
+          autoClose: 3000,
+          onClose: () => router.push("/signin"),
+        });
+        setUser(response.data.user);  // Set the user state
+      }
   } catch (error) {
     return NextResponse.json(
       { message: "Error creating user" },

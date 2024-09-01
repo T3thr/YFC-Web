@@ -24,14 +24,6 @@ const Signup = () => {
     e.preventDefault();
     signupUser({ name, email, password });
   };
-  if (data.success) {
-    toast.success("Signup successful! Please sign in to continue.", {
-      autoClose: 3000,
-      onClose: () => router.push("/signin"),
-    });
-    setUser(data.user);  // Set the user state
-  }
-  
 
   return (
     <div

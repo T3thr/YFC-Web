@@ -37,10 +37,12 @@ export const AuthProvider = ({ children }) => {
   const signupUser = async ({ name, email, password }) => {
     try {
       setLoading(true);
-      const { data } = await axios.post("/api/auth/signup", { name, email, password });
+      const { data, status } = await axios.post("/api/auth/signup", { name, email, password });
       setLoading(false);
-
-      if (data.success) {
+  
+      console.log('API Response:', data, status); // Debugging line
+  
+      if (status === 201) {
         toast.success("Signup successful! Please sign in to continue.", {
           autoClose: 3000,
           onClose: () => router.push("/signin"),
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       toast.error(errorMessage);
     }
   };
+  
 
   const registerUser = async ({ name, email, password }) => {
     try {
