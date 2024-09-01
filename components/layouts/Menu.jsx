@@ -102,6 +102,7 @@ export default function Menu() {
           <div className='md:hidden sm:flex flex-wrap items-center  ml-2 justify-end md:w-full mx-auto'>
             <button
               type='button'
+              onClick={() => window.location.href = '/profile'} 
               className='bg-white p-3 inline-flex items-center rounded-md text-black hover:bg-gray-200 hover:text-gray-800 border border-transparent'
             >
               <span className='sr-only'>Open menu</span>

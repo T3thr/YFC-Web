@@ -16,7 +16,8 @@ const productSchema = new Schema(
             default: 0
         },
         images : [
-            {
+            {    
+                _id: mongoose.Schema.Types.ObjectId,
                 url: {
                     type: String,
                     required: true,

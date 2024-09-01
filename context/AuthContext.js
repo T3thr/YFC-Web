@@ -33,6 +33,27 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+
+  const signupUser = async ({ name, email, password }) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/signup", { name, email, password });
+      setLoading(false);
+
+      if (data.success) {
+        toast.success("Signup successful! Please sign in to continue.", {
+          autoClose: 3000,
+          onClose: () => router.push("/signin"),
+        });
+        setUser(data.user);  // Set the user state
+      }
+    } catch (error) {
+      setLoading(false);
+      const errorMessage = error.response?.data?.message || "Signup failed";
+      toast.error(errorMessage);
+    }
+  };
+
   const registerUser = async ({ name, email, password }) => {
     try {
       const { data } = await axios.post(
@@ -51,28 +72,6 @@ export const AuthProvider = ({ children }) => {
       setError(error?.response?.data?.message);
     }
   };
-
-
-  const signupUser = async ({ name, email, password }) => {
-    try {
-      setLoading(true);
-      const { data } = await axios.post("/api/auth/signup", { name, email, password });
-      setLoading(false);
-
-      if (data.success) {
-        setUser(data.user);  // Set the user state
-        toast.success("Signup successful! Please sign in to continue.", {
-          autoClose: 3000,
-          onClose: () => router.push("/signin"),
-        });
-      }
-    } catch (error) {
-      setLoading(false);
-      const errorMessage = error.response?.data?.message || "Signup failed";
-      toast.error(errorMessage);
-    }
-  };
-
 
   const loginUser = async ({ email, password }) => {
     try {
@@ -194,16 +193,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const addNewAddress = async (addressData) => {
+  const addNewAddress = async (newAddress) => {
     try {
-      const { data } = await axios.post("/api/address", addressData);
-  
-      if (data.success) {
-        toast.success("Address added successfully");
-        // Optionally refresh the address list or navigate
+      const res = await fetch('/api/address', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newAddress),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to add address');
       }
-    } catch (error) {
-      setError(error?.response?.data?.message);
+      // Handle successful address addition
+    } catch (err) {
+      setError(err.message);
     }
   };
 

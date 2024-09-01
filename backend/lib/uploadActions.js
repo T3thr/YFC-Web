@@ -97,47 +97,6 @@ export async function uploadPhoto(formData){
     }
 }
 */}
-export async function uploadPhoto(formData, sku) {
-    try {
-        await mongodbConnect(); // Ensure the database is connected
-
-        // Save to temp directory
-        const newFiles = await savePhotosToLocal(formData);
-
-        // Upload to Cloudinary
-        const photos = await uploadPhotosToCloudinary(newFiles);
-
-        // Delete temp files
-        await Promise.all(newFiles.map(file => fs.unlink(file.filepath)));
-
-        // Save image info to MongoDB
-        const newPhotos = photos.map(photo => ({
-            public_id: photo.public_id,
-            secure_url: photo.secure_url
-        }));
-
-        // Update the Product with new image
-        await Product.findOneAndUpdate(
-            { productSKU: sku },
-            { $push: { images: { $each: newPhotos } } },
-            { new: true }
-        );
-
-        // Return photo data for the frontend
-        return {
-            data: photos.map(photo => ({
-                url: photo.secure_url,
-                public_id: photo.public_id
-            })),
-            msg: 'Upload Success'
-        };
-
-    } catch (error) {
-        return { errMsg: error.message };
-}
-}
-
-
 export async function getAllPhotos(){
     try {
         // จาก cloudinary
@@ -156,7 +115,7 @@ export async function getAllPhotos(){
         return { errMsg: error.message }
     }
 }
-{/*
+
 export async function deletePhoto(public_id){
     try {
         await Promise.all ([
@@ -170,8 +129,79 @@ export async function deletePhoto(public_id){
         return { errMsg: error.message }
     }
 }
-*/}
 
+
+
+export async function uploadPhoto(formData, sku) {
+    try {
+        await mongodbConnect(); // Ensure the database is connected
+
+        // Save to temp directory
+        const newFiles = await savePhotosToLocal(formData);
+
+        // Upload to Cloudinary
+        const photos = await uploadPhotosToCloudinary(newFiles);
+
+        // Delete temp files
+        await Promise.all(newFiles.map(file => fs.unlink(file.filepath)));
+
+        // Prepare new photos for MongoDB
+        const newPhotos = photos.map(photo => ({
+            public_id: photo.public_id,
+            secure_url: photo.secure_url
+        }));
+
+        // Fetch the product
+        const product = await Product.findOne({ productSKU: sku });
+
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        // Delete old images from Cloudinary
+        await Promise.all(product.images.map(img => cloudinary.uploader.destroy(img.public_id)));
+
+        // Update the Product with new images
+        await Product.findOneAndUpdate(
+            { productSKU: sku },
+            { images: newPhotos },
+            { new: true }
+        );
+
+        // Return photo data for the frontend
+        return {
+            data: newPhotos,
+            msg: 'Upload Success'
+        };
+
+    } catch (error) {
+        return { errMsg: error.message };
+    }
+}
+
+export async function uploadImageToCloudinary(filepath) {
+    return new Promise((resolve, reject) => {
+      cloudinary.v2.uploader.upload(filepath, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+  
+  export async function deleteImageFromCloudinary(publicId) {
+    return new Promise((resolve, reject) => {
+      cloudinary.v2.uploader.destroy(publicId, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
   
 export async function revalidate(path) {
     revalidatePath(path)

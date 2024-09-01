@@ -10,14 +10,16 @@ export default async function NavBar() {
   if(session && session.user) {
     // กำหนดปุ่ม Sign Out เพื่อสั่งให้ออกจากระบบ
     return (
-        <div className='flex flex-col justify-start items-center mx-auto h-screen my-5'>
+        <div className='flex flex-col justify-start items-center mx-auto h-screen my-5 gap-6'>
             <div className='text-3xl'>{session.user?.name}</div>
             <div className='text-2xl text-gray-500'>{session.user?.email}</div>
+
+            {/* Add New Address Button */}
             <Link 
-            href={'api/auth/signout?callbackUrl=/profile'}
-            className='bg-blue-400 text-white rounded-sm shadow-sm py-1 px-2 my-4'
+            href='/address/new'
+            className='my-6 bg-green-600 text-white rounded-md py-2 px-4 shadow-md hover:bg-green-700 transition-colors'
             >
-                Sign Out
+              Add New Address
             </Link>
         </div>
     )

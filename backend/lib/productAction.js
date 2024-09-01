@@ -31,3 +31,22 @@ export function useAllProducts() {
         error
     };
 }
+
+
+export async function saveProductImage(sku, imageData) {
+    const product = await Product.findOneAndUpdate(
+      { productSKU: sku },
+      { $push: { images: imageData } },
+      { new: true }
+    );
+    return product;
+  }
+  
+  export async function deleteProductImage(sku, imageId) {
+    const product = await Product.findOneAndUpdate(
+      { productSKU: sku },
+      { $pull: { images: { _id: imageId } } },
+      { new: true }
+    );
+    return product;
+  }

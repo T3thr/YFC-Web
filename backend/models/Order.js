@@ -1,7 +1,7 @@
 // models/Order.js
-import mongoose from 'mongoose';
+import mongoose, {Schema} from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,

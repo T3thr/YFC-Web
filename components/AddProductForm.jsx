@@ -3,9 +3,10 @@ import { useState } from 'react';
 import Loading from '@/app/loading';
 import Link from 'next/link';
 import Title from '@/components/Title';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function AddProductForm() {
-  
+  const { data: session } = useSession();
   const [productSKU, setProductSKU] = useState('');
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
@@ -63,6 +64,15 @@ export default function AddProductForm() {
   if(isLoading) {
     return   <Loading /> 
   }
+
+  if (!session?.user?.role || session.user.role !== 'admin') {
+    return (
+      <div className='flex justify-center items-center min-w-full min-h-screen'>
+        <div className='text-xl text-red-500'>Access Denied. Admins Only.</div>
+      </div>
+    );
+  }
+
   return (
 <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-24 p-2">
     <Title text="แบบฟอร์มเพิ่มสินค้า" />

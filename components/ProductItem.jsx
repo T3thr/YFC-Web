@@ -40,7 +40,7 @@ export default function ProductItem({ data, refreshProducts }) {
       <div className='flex justify-center mx-auto text-sm m-1'>
         <Link href={`/upload/${data.productSKU}`}>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1">
-            Upload Image
+            เพิ่มรูปภาพ
           </button>
         </Link>
         <EditProductButton sku={data.productSKU} />

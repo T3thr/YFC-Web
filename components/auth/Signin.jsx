@@ -33,7 +33,7 @@ const Signin = () => {
   const submitAdminHandler = async (e) => {
     e.preventDefault();
 
-    router.push("/api/auth/signin"); // Navigate after the toast disappears
+    router.push("/api/auth/signin?callbackUrl=/"); // Navigate after the toast disappears
   };
 
   return (

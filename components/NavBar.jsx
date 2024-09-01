@@ -36,9 +36,7 @@ export default async function NavBar() {
           <Wrapper><Link href='/' className={` hidden lg:block`}>Home</Link></Wrapper>
           
           {/* แสดงเมนู Sign Out เมื่อเข้าสู่ระบบแล้ว */}
-          {session && <Wrapper><Link href='/products'>All Products</Link></Wrapper>}
-          {session && <Wrapper><Link href='/products/add'>Add Product</Link></Wrapper>}
-          {session && <Wrapper><Link href='/api/auth/signout' className={`hidden lg:flex items-center`}>
+          {session && <Wrapper><Link href='api/auth/signout?callbackUrl=/' className={`hidden lg:flex items-center`}>
             <IoLogOut className='mr-2'/>ออกจากระบบ
           </Link></Wrapper>}
 

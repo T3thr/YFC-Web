@@ -12,10 +12,7 @@ export default async function AddProductPage() {
   return ( 
     <div>
       <AddProductForm />
-      <UploadForm />
       
-      <h1>All Photo</h1>
-      <PhotoList photos={photos || []} />
     </div>
   )
 }
