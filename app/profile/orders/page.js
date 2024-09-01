@@ -1,56 +1,61 @@
 // app/profile/orders/page.js
-'use client';
+import { getSession } from 'next-auth/react';
+import Order from '@/backend/models/Order';
+import mongodbConnect from '@/backend/lib/mongodb';
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+export async function getServerSideProps(context) {
+  try {
+    await mongodbConnect(); // Ensure the database connection
 
-export default function ProfileOrdersPage() {
-  const [orders, setOrders] = useState([]);
-  const { data: session } = useSession();
+    const session = await getSession(context);
+    if (!session || !session.user) {
+      return { redirect: { destination: '/signin', permanent: false } };
+    }
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (!session) return;
+    const orders = await Order.find({ userId: session.user._id })
+      .populate('cartItems.product')
+      .exec();
 
-      const res = await fetch('/api/orders/user');
-      if (res.ok) {
-        const data = await res.json();
-        setOrders(data);
-      } else {
-        console.error('Failed to fetch orders');
-      }
+    return {
+      props: { orders: JSON.parse(JSON.stringify(orders)) },
     };
-
-    fetchOrders();
-  }, [session]);
-
-  if (!session) {
-    return <p>Please log in to view your orders.</p>;
+  } catch (error) {
+    return {
+      props: { orders: [] },
+    };
   }
+}
 
+export default function ProfileOrdersPage({ orders }) {
   return (
-    <section>
-      <h1 className="text-4xl font-bold mb-4">Your Orders</h1>
-      <div>
+    <section className="py-10 bg-gray-100">
+      <div className="container max-w-screen-xl mx-auto px-4">
+        <h2 className="text-3xl font-bold mb-6">My Orders</h2>
         {orders.length === 0 ? (
           <p>You have no orders yet.</p>
         ) : (
-          orders.map((order) => (
-            <div key={order._id} className="mb-8 p-4 border rounded-lg bg-white shadow-md">
-              <h2 className="text-2xl font-semibold mb-2">Order #{order._id}</h2>
-              <p>Total: {order.totalPrice} ฿</p>
-              <p>Paid: {order.isPaid ? 'Yes' : 'No'}</p>
-              <p>Delivered: {order.isDelivered ? 'Yes' : 'No'}</p>
-              <ul>
-                {order.items.map((item) => (
-                  <li key={item.product} className="flex justify-between py-2">
-                    <span>{item.name}</span>
-                    <span>{item.qty} x {item.price} ฿</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
+          <div className="space-y-6">
+            {orders.map(order => (
+              <div key={order._id} className="bg-white p-6 rounded-lg shadow-lg">
+                <h3 className="text-lg font-semibold mb-4">Order #{order._id}</h3>
+                <div>
+                  {order.cartItems.map(item => (
+                    <div key={item.product._id} className="flex justify-between mb-4">
+                      <div>{item.product.productName}</div>
+                      <div>{item.quantity} x {item.price} ฿</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between font-bold mt-4">
+                  <span>Total Amount</span>
+                  <span>{order.totalAmount} ฿</span>
+                </div>
+                <div className="mt-4 text-gray-500">
+                  Status: {order.status}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </section>
