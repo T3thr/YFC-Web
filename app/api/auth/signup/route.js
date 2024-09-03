@@ -28,7 +28,7 @@ export async function POST(req) {
         id: user._id,
         name: user.name,
         email: user.email,
-        // Do not include password in the response
+        password: user.password,
       },
     }, { status: 201 });
     

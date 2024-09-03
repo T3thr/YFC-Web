@@ -80,9 +80,9 @@ export default function Cart() {
     0
   );
 
-  const shipAmount = (100).toFixed(2);
+  const shippingCost = (100).toFixed(2);
   //const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
-  const totalAmount = (Number(amountWithoutShip) + Number(shipAmount)).toFixed(2);
+  const totalAmount = (Number(amountWithoutShip) + Number(shippingCost)).toFixed(2);
 
   return (
     <>
@@ -92,11 +92,13 @@ export default function Cart() {
             <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg shadow-black">
               ตะกร้าของคุณ ({cart.cartItems.length} Item(s){cart.cartItems.length !== 1 && 's'})
             </h2>
-            <Link href="/checkout">
-              <button className="bg-white text-purple-600 py-2 px-6 rounded-lg shadow-lg hover:bg-purple-600 hover:text-white transition duration-300">
-                ไปยังหน้าชำระเงิน
-              </button>
-            </Link>
+            {cart.cartItems.length > 0 && (
+              <Link href="/checkout">
+                <button className="bg-white text-purple-600 py-2 px-6 rounded-lg shadow-lg hover:bg-purple-600 hover:text-white transition duration-300">
+                  ไปยังหน้าชำระเงิน
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -199,7 +201,7 @@ export default function Cart() {
                   </div>
                   <div className="flex justify-between mb-4 text-gray-700">
                     <span>ค่าส่ง </span>
-                    <span>{shipAmount} ฿</span>
+                    <span>{shippingCost} ฿</span>
                   </div>
                   <div className="flex justify-between font-semibold text-xl mb-4 text-gray-900">
                     <span>ยอดรวม</span>

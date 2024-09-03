@@ -85,9 +85,7 @@ export default function Menu() {
               <div className='lg:flex items-center mb-4 space-x-3 mt-4 cursor-pointer'>
                 <img
                   className='w-10 h-10 rounded-full'
-                  src={
-                    user?.avatar ? user?.avatar?.url : "/images/default.png"
-                  }
+                  src={'/images/default.png'}
                 />
                 <div className='space-y-1 font-medium'>
                   <p>

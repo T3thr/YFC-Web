@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.post("/api/auth/me",);
+        const { data } = await axios.get("/api/auth/session");
         setUser(data.user); // Set the fetched user data in state
         setLoading(false);
       } catch (error) {
@@ -76,36 +76,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginUser = async ({ email, password }) => {
-    try {
-      setLoading(true);
-      const res = await nextAuthSignIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-      setLoading(false);
 
-      if (res.error) {
-        toast.error(res.error);
-      }
 
-      if (res.ok) {
-        toast.success("Signin successful!", {
-          autoClose: 1000,
-          onClose: () => {
-            setTimeout(() => {
-              window.location.reload(); // Optionally reload the page to update the session state
-            }, 1000); // Adjust the delay as needed
-          },
-        });
-      }
-    } catch (error) {
-      setLoading(false);
-      const errorMessage = error.response?.data?.message || "Signin failed";
-      toast.error(errorMessage);
-    }
-  };
+    const loginUser = async ({ email, password }) => {
+        try {
+            setLoading(true);
+            const res = await nextAuthSignIn("credentials", {
+                redirect: false,
+                email,
+                password,
+            });
+            setLoading(false);
+
+            if (res.error) {
+                toast.error(res.error);
+            } else if (res.ok) {
+                toast.success("Signin successful!");
+                router.push("/");
+            }
+        } catch (error) {
+            setLoading(false);
+            toast.error("Signin failed");
+        }
+    };
 
   const adminSignIn = async ({ username, password }) => {
     try {
@@ -156,24 +149,21 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (formData) => {
     try {
       setLoading(true);
+      const { data } = await axios.post("/api/auth/update-profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setLoading(false);
 
-      const { data } = await axios.put(
-        `${process.env.API_URL}/api/auth/me/update`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (data?.user) {
-        loadUser();
-        setLoading(false);
+      if (data.success) {
+        toast.success("Profile updated successfully!");
+        setUser(data.user); // Update user state with new profile data
       }
     } catch (error) {
       setLoading(false);
-      setError(error?.response?.data?.message);
+      const errorMessage = error.response?.data?.message || "Profile update failed";
+      toast.error(errorMessage);
     }
   };
 

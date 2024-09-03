@@ -33,7 +33,7 @@ const Sidebar = () => {
                 All Products <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-
+{/* 
             <li>
               <Link
                 href="/admin/orders"
@@ -51,7 +51,7 @@ const Sidebar = () => {
                 All Users <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-
+*/}
             <hr />
           </>
         )}
@@ -72,6 +72,7 @@ const Sidebar = () => {
             Orders
           </Link>
         </li>
+{/* 
         <li>
           <Link
             href="/profile/update"
@@ -88,7 +89,7 @@ const Sidebar = () => {
             Update Password
           </Link>
         </li>
-
+*/}
         <li>
           <Link 
             href={'api/auth/signout?callbackUrl=/profile'}

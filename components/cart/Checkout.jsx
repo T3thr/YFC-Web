@@ -1,58 +1,69 @@
-// app/checkout/page.js
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Loading from '@/app/loading';
+import AuthContext from "@/context/AuthContext";
+import axios from 'axios'; // Ensure axios is imported
+import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
-  const [cart, setCart] = useState({ cartItems: [] });
-  const [isProcessing, setIsProcessing] = useState(false);
-  const router = useRouter();
+    const { user } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
+    const [cart, setCart] = useState({ cartItems: [] });
+    const [isProcessing, setIsProcessing] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    } else {
-      // Redirect to the cart page if there's no saved cart
-      router.push('/cart');
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            setCart(JSON.parse(savedCart));
+        } else {
+            router.push('/carts');
+        }
+    }, [router]);
+
+    if (cart.cartItems.length === 0) {
+        return <Loading />;
     }
-  }, [router]);
 
-  if (cart.cartItems.length === 0) {
-    // Optionally show a loading or empty state here while redirecting
-    return <Loading />;
-  }
+    const amountWithoutShip = cart.cartItems.reduce(
+        (acc, item) => acc + item.quantity * item.price,
+        0
+    );
+    const shippingCost = 100; // Example shipping cost
+    const totalAmount = (amountWithoutShip + shippingCost).toFixed(2);
 
-  const amountWithoutShip = cart.cartItems.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
-  );
-  const shipAmount = (100).toFixed(2);
-  const totalAmount = (Number(amountWithoutShip) + Number(shipAmount)).toFixed(2);
+    const handleCheckout = async () => {
+        if (!user) {
+            toast.error("You need to be logged in to place an order.");
+            return;
+        }
 
-  const handleCheckout = async () => {
-    setIsProcessing(true);
-    try {
+        setLoading(true);
 
+        try {
+            const response = await axios.post("/api/orders", {
+                userId: user.id,
+                cartItems: cart.cartItems,
+                shippingCost
+            });
 
-      // Clear the cart
-      localStorage.removeItem('cart');
-      setCart({ cartItems: [] });
-
-
-      // Redirect to a confirmation or thank you page
-      router.push('/confirmation');
-    } catch (error) {
-      console.error('Error:', error);
-      // Handle error (e.g., show an error message to the user)
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
+            if (response.status === 201) {
+                toast.success("Order placed successfully!");
+                router.push("/order-success");
+            } else {
+                toast.error("Failed to place order. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error placing order:", error);
+            toast.error("Failed to place order. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+  
   return (
     <>
       {isProcessing ? (
@@ -112,7 +123,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex justify-between mb-4 text-gray-700">
                       <span>ค่าส่ง </span>
-                      <span>{shipAmount} ฿</span>
+                      <span>{shippingCost} ฿</span>
                     </div>
                     <div className="flex justify-between font-semibold text-xl mb-4 text-gray-900">
                       <span>ยอดรวม</span>
