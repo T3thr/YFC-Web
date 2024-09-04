@@ -1,43 +1,43 @@
-// models/Order.js
+// backend/models/Order.js
+
 import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    cartItems: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
+    user: {
+        name: {
+          type: String,
+          required: true,
         },
-        productName: {
-            type: String,
-            required: true,
+        email: {
+          type: String,
+          required: true,
         },
-        quantity: {
-            type: Number,
-            required: true,
+        id: {
+          type: String,
+          required: true,
         },
-        price: {
-            type: Number,
-            required: true,
+        role: {
+          type: String,
+          required: false,
         },
-    }],
-    totalAmount: {
-        type: Number,
-        required: true,
+        avatar: {
+          type: String,
+          required: false,
+        },
+      },
+  orderItems: [
+    {
+        product: { type: String, required: true }, // Assuming this is product SKU or similar
+        productName: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        price: { type: Number, required: true },
+        images: [{ type: String }]
     },
-    shippingCost: {
-        type: Number,
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+  ],
+  amountWithoutShip: { type: Number, required: true },
+  shippingCost: { type: Number, required: true, default: 100 },
+  totalAmount: { type: Number, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.models.Order || mongoose.model('Order', OrderSchema);

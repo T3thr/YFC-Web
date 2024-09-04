@@ -35,42 +35,43 @@ export default function CheckoutPage() {
     const shippingCost = 100; // Example shipping cost
     const totalAmount = (amountWithoutShip + shippingCost).toFixed(2);
 
-    const handleCheckout = async () => {
-        if (!user) {
-            toast.error("You need to be logged in to place an order.");
-            return;
+const handleCheckout = async () => {
+    setIsProcessing(true);
+    try {
+        const orderItems = cart.cartItems.map(item => ({
+            product: item.product, // Assuming productId is the correct ObjectId
+            productName: item.productName,
+            quantity: item.quantity,
+            price: item.price,
+        }));
+
+        const response = await axios.post('/api/orders', {
+            user: {
+                name: user.name, // Assuming `user` comes from your AuthContext or NextAuth
+                email: user.email,
+                id: user.id,
+                role: user.role,
+                avatar: user.avatar,
+              },
+            orderItems,
+            amountWithoutShip,
+            shippingCost,
+            totalAmount,
+        });
+
+        if (response.status === 201) {
+            toast.success('Order placed successfully!');
+            localStorage.removeItem('cart');
+            router.push('/confirmation'); 
         }
+    } catch (error) {
+        console.error('Checkout error:', error);
+        toast.error('Failed to place the order. Please try again.');
+    } finally {
+        setIsProcessing(false);
+    }
+};
 
-        setIsProcessing(true);
-
-        try {
-            const response = await axios.post("/api/orders", {
-                userId: user._id, 
-                cartItems: cart.cartItems.map(item => ({
-                    productId: productSKU,
-                    productName: item.productName,
-                    quantity: item.quantity,
-                    price: item.price,
-                })),
-                totalAmount,
-                shippingCost, 
-            });
-
-            if (response.status === 201) {
-                // Clear the cart
-                localStorage.removeItem('cart');
-                toast.success("Order placed successfully!");
-                router.push("/confirmation");
-            } else {
-                toast.error("Failed to place order. Please try again.");
-            }
-        } catch (error) {
-            console.error("Error placing order:", error);
-            toast.error("Failed to place order. Please try again.");
-        } finally {
-            setIsProcessing(false);
-        }
-    };
   
   return (
     <>

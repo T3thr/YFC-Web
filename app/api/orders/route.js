@@ -16,12 +16,13 @@ export async function GET(req) {
 
 export async function POST(req) {
     await mongodbConnect();
-    const { userId, cartItems, totalAmount, shippingCost } = await req.json();
+    const { user, cartItems, amountWithoutShip,totalAmount, shippingCost } = await req.json();
 
     try {
         const newOrder = new Order({
-            userId,
+            user,
             cartItems,
+            amountWithoutShip,
             totalAmount,
             shippingCost,
         });
