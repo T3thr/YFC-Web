@@ -56,7 +56,12 @@ const Product = () => {
 
   const updateFilters = (e) => {
     e.preventDefault();
+        if (parseFloat(minPrice) > parseFloat(maxPrice)) {
+      setError('ช่วงราคาต่ำสุดต้องไม่มากกว่าช่วงราคาสูงสุด');
+      alert('ช่วงราคาต่ำสุดต้องไม่มากกว่าช่วงราคาสูงสุด');
+    } else {
     updateURLParams();
+    }
   };
 
   const handlePriceChange = (e) => {
@@ -107,7 +112,7 @@ const Product = () => {
 
     <div className='container mx-auto px-4'>
     { error && (
-      <div className='border mb-4 p-2 text-center border-red-500 text-red-200 rounded-md '>
+      <div className='border mb-4 p-2 text-center border-red-500 text-red-700 rounded-md '>
         {error}
       </div>
     )}

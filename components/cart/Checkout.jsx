@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Loading from '@/app/loading';
 import AuthContext from "@/context/AuthContext";
-import axios from 'axios'; // Ensure axios is imported
+import axios from 'axios'; 
 import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
@@ -20,7 +20,7 @@ export default function CheckoutPage() {
         if (savedCart) {
             setCart(JSON.parse(savedCart));
         } else {
-            router.push('/carts');
+            router.push('/cart');
         }
     }, [router]);
 
@@ -41,18 +41,26 @@ export default function CheckoutPage() {
             return;
         }
 
-        setLoading(true);
+        setIsProcessing(true);
 
         try {
             const response = await axios.post("/api/orders", {
-                userId: user.id,
-                cartItems: cart.cartItems,
-                shippingCost
+                userId: user._id, 
+                cartItems: cart.cartItems.map(item => ({
+                    productId: productSKU,
+                    productName: item.productName,
+                    quantity: item.quantity,
+                    price: item.price,
+                })),
+                totalAmount,
+                shippingCost, 
             });
 
             if (response.status === 201) {
+                // Clear the cart
+                localStorage.removeItem('cart');
                 toast.success("Order placed successfully!");
-                router.push("/order-success");
+                router.push("/confirmation");
             } else {
                 toast.error("Failed to place order. Please try again.");
             }
@@ -60,7 +68,7 @@ export default function CheckoutPage() {
             console.error("Error placing order:", error);
             toast.error("Failed to place order. Please try again.");
         } finally {
-            setLoading(false);
+            setIsProcessing(false);
         }
     };
   

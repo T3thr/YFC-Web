@@ -31,10 +31,10 @@ const Signup = () => {
       className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
     >
       <form onSubmit={submitHandler}>
-        <h2 className="mb-5 text-2xl font-semibold">Register Account</h2>
+        <h2 className="mb-5 text-2xl font-semibold">Create Account</h2>
 
         <div className="mb-4">
-          <label className="block mb-1"> Full Name </label>
+          <label className="block mb-1"> Name </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"

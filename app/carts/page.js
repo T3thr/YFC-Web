@@ -5,15 +5,18 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Loading from '@/app/loading'
 import  Cart   from '@/components/cart/Cart'
+import AuthContext from "@/context/AuthContext";
+import { useContext } from 'react'
 
 export default function CartPage() {
   const {data, status} =  useSession()
+  const { user } = useContext(AuthContext);
   // ขณะกำลังเข้าสู่ระบบ หรือออกจากระบบ
   if(status === 'loading') {
     return <Loading />
   }
   // เมื่อออกจากระบบ
-  if(status === 'unauthenticated') {
+  if(status === 'unauthenticated' && !user) {
     return (
       <div className='flex flex-col justify-start items-center mx-auto h-screen my-5'>
       <div className='text-3xl'>Please Sign In!!!</div>
@@ -27,7 +30,7 @@ export default function CartPage() {
     )
   }
   // เมื่อเข้าสู่ระบบเรียบร้อย
-  if(status === 'authenticated') {
+  if(status === 'authenticated' && user) {
       return (
         <div className='p-4 min-h-screen'>
         <Cart />

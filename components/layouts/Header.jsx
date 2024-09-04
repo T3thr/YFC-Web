@@ -1,7 +1,7 @@
 import React from 'react';
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { getServerSession } from 'next-auth/next'
-import NavBar from '@/components/NavBar';
+import NavBar from './NavBar';
 import Menu from './Menu'
 import { GlobalProvider } from "@/app/GlobalProvider";
 

@@ -2,10 +2,10 @@
 
 import Loading from '@/app/loading';
 import ProductItem from './ProductItem';
-import Title from './Title';
+import Title from '@/components/Title';
 import Link from 'next/link';
 import { useAllProducts } from '@/backend/lib/productAction';
-import CustomPagination from './layouts/CustomPagination';
+import CustomPagination from '@/components/layouts/CustomPagination';
 import { useSearchParams } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -14,7 +14,7 @@ export default function AllProducts() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
-  const resPerPage = 12;
+  const resPerPage = 6;
 
   if (error) {
     return <div>{error.message}</div>;
@@ -56,9 +56,9 @@ export default function AllProducts() {
   }
 
   return (
-    <div className='flex flex-col justify-start items-center min-w-full min-h-screen'>
+    <div className='flex flex-col justify-start items-center min-w-0 min-h-screen'>
       <Title text="Products List" />
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 w-full h-fit'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full h-fit'>
         {paginatedProducts?.map((item, index)  => (
           <div
             key={index}

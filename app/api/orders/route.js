@@ -1,39 +1,35 @@
-import mongodbConnect from "@/backend/lib/mongodb"; // Ensure this path is correct
+import mongodbConnect from "@/backend/lib/mongodb";
 import Order from "@/backend/models/Order";
+import { NextResponse } from "next/server";
+
+export async function GET(req) {
+    await mongodbConnect();
+
+    try {
+        const orders = await Order.find().populate('userId').populate('cartItems.productSKU');
+        return new Response(JSON.stringify(orders), { status: 200 });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        return new Response('Failed to fetch orders.', { status: 500 });
+    }
+}
 
 export async function POST(req) {
+    await mongodbConnect();
+    const { userId, cartItems, totalAmount, shippingCost } = await req.json();
+
     try {
-        await mongodbConnect();
-        const { userId, cartItems } = await req.json();
-        
-        if (!userId || !cartItems) {
-            return new Response("Invalid data", { status: 400 });
-        }
-
-        // Calculate the total amount and shipping cost here
-        const amountWithoutShip = cartItems.reduce(
-            (acc, item) => acc + item.quantity * item.price,
-            0
-        );
-        const shippingCost = 100; // Example shipping cost
-        const totalAmount = amountWithoutShip + shippingCost;
-
-        // Create a new order
-        const order = await Order.create({
+        const newOrder = new Order({
             userId,
-            products: cartItems.map(item => ({
-                productId: item.product,
-                quantity: item.quantity,
-                price: item.price
-            })),
+            cartItems,
             totalAmount,
             shippingCost,
-            status: 'Pending',
         });
 
-        return new Response(JSON.stringify({ success: true, order }), { status: 201 });
+        await newOrder.save();
+        return new Response(JSON.stringify(newOrder), { status: 201 });
     } catch (error) {
-        console.error("Failed to place order:", error);
-        return new Response("Failed to place order", { status: 500 });
+        console.error('Error creating order:', error);
+        return new Response('Failed to create order.', { status: 500 });
     }
 }

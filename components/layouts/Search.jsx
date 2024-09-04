@@ -11,15 +11,15 @@ const Search = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    // Get the current URL path
+    // ประกาศตัวแปร สำหรับ URL ปัจจุบัน
     const currentPath = window.location.pathname;
 
     if (keyword) {
-      // Construct the new URL with the keyword query
+      // กำหนดช่องทาง URL ด้วย keyword query
       const newUrl = `${currentPath}?keyword=${encodeURIComponent(keyword)}`;
       router.push(newUrl);
     } else {
-      // If there's no keyword, redirect to the current path without the keyword
+      // หากไม่ใส่คำค้นหา จะอยู่หน้าเดิม
       router.push(currentPath);
     }
   };
@@ -32,7 +32,7 @@ const Search = () => {
       <input
         className="flex-grow appearance-none border w-auto border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400"
         type="text"
-        placeholder="Search products..."
+        placeholder="ค้นหาสินค้า..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />

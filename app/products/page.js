@@ -1,4 +1,4 @@
-import AllProducts from '@/components/AllProducts'
+import AllProducts from '@/components/products/AllProducts'
 import PhotoList from '@/components/PhotoList'
 import React from 'react'
 import { getAllPhotos } from '@/backend/lib/uploadActions'
@@ -12,11 +12,7 @@ export default async function AllProductsPage() {
         <AllProducts />
       </div>
 
-    
-        <div className='flex flex-col'>
-            <h1>All Photo</h1>
-            <PhotoList photos={photos || []} />
-        </div>
+
     </div>
   )
 }
