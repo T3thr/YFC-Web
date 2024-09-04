@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { uploadPhoto } from '@/backend/lib/uploadActions';
 import { useProductBySKU } from '@/backend/lib/productAction';
-import DeleteImageButton from '@/components/DeleteImageButton'; 
+import DeleteImageButton from '@/components/products/DeleteImageButton'; 
 import Loading from '@/app/loading';
 
 export default function UploadImagePage({ params }) {
