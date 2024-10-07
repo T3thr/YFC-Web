@@ -6,11 +6,19 @@ import Link from 'next/link'
 import Loading from '@/app/loading'
 import  Cart   from '@/components/cart/Cart'
 import AuthContext from "@/context/AuthContext";
-import { useContext } from 'react'
+import { useEffect, useContext } from 'react'
 
 export default function CartPage() {
-  const {data, status} =  useSession()
-  const { user } = useContext(AuthContext);
+  const { data, status } = useSession();
+  const { user, setUser } = useContext(AuthContext);
+  
+  useEffect(() => {
+    if (data) {
+      setUser(data.user); // Update the user context when session data changes
+    } else {
+      setUser(null); // Clear user context if no session
+    }
+  }, [data, setUser]);
   // ขณะกำลังเข้าสู่ระบบ หรือออกจากระบบ
   if(status === 'loading') {
     return <Loading />
