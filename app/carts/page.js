@@ -14,11 +14,10 @@ export default function CartPage() {
   
   useEffect(() => {
     if (data) {
-      setUser(data.user); // Update the user context when session data changes
-    } else {
-      setUser(null); // Clear user context if no session
+      setUser(data?.user);
     }
-  }, [data, setUser]);
+  }, [data]);
+
   // ขณะกำลังเข้าสู่ระบบ หรือออกจากระบบ
   if(status === 'loading') {
     return <Loading />
