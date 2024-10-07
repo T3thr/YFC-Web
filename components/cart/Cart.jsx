@@ -80,8 +80,7 @@ export default function Cart() {
     0
   );
 
-  const shippingCost = (100).toFixed(2);
-  //const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
+  const shippingCost = 100;
   const totalAmount = (Number(amountWithoutShip) + Number(shippingCost)).toFixed(2);
 
   return (
@@ -90,7 +89,7 @@ export default function Cart() {
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg shadow-black">
-              ตะกร้าของคุณ ({cart.cartItems.length} Item(s){cart.cartItems.length !== 1 && 's'})
+              ตะกร้าของคุณ ({cart.cartItems.length} Item{cart.cartItems.length > 1 && 's'})
             </h2>
             {cart.cartItems.length > 0 && (
               <Link href="/checkout">
