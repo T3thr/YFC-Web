@@ -29,6 +29,7 @@ export async function POST(req) {
         name: user.name,
         email: user.email,
         password: user.password,
+        role: 'user',
       },
     }, { status: 201 });
     

@@ -16,14 +16,7 @@ const OrderSchema = new mongoose.Schema({
           type: String,
           required: true,
         },
-        role: {
-          type: String,
-          required: false,
-        },
-        avatar: {
-          type: String,
-          required: false,
-        },
+        role: { type: String, required: false },
       },
   orderItems: [
     {
@@ -37,6 +30,7 @@ const OrderSchema = new mongoose.Schema({
   amountWithoutShip: { type: Number, required: true },
   shippingCost: { type: Number, required: true, default: 100 },
   totalAmount: { type: Number, required: true },
+  status: { type: String, default: 'pending'},
   createdAt: { type: Date, default: Date.now },
 });
 

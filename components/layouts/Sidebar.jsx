@@ -33,16 +33,16 @@ const Sidebar = () => {
                 All Products <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-{/* 
+
             <li>
               <Link
-                href="/admin/orders"
+                href="/profile/adminorders"
                 className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
-                All Orders <span className="text-red-500">(Admin)</span>
+                Manage Orders <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-
+{/* 
             <li>
               <Link
                 href="/admin/users"

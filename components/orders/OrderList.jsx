@@ -1,5 +1,5 @@
 // components/OrderList.jsx
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import OrderItem from './OrderItem';
@@ -10,23 +10,22 @@ export default function OrderList() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch(`/api/orders?userId=${session?.user?.id}`);
+      const response = await fetch(`/api/orders?userEmail=${session?.user?.email}`);
       const data = await response.json();
-      setOrders(data.orders);
+      setOrders(data);
     };
 
-    if (session?.user?.id) {
+    if (session?.user?.email) {
       fetchOrders();
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.email]);
 
   if (!orders.length) {
     return <div className='text-center'>No orders found</div>;
   }
 
   return (
-    <div className='order-list'>
-      <h2>Your Orders</h2>
+    <div className='order-list p-6'>
       {orders.map((order, index) => (
         <OrderItem key={index} order={order} />
       ))}

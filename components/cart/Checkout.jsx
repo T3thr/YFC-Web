@@ -57,6 +57,7 @@ const handleCheckout = async () => {
             amountWithoutShip,
             shippingCost,
             totalAmount,
+            status : "pending",
         });
 
         if (response.status === 201) {
