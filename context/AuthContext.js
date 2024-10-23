@@ -98,7 +98,9 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             setLoading(false);
-            toast.error("Signin failed");
+            const errorMessage = error.response?.data?.message || "Signin failed";
+            toast.error(errorMessage);
+            router.push("/signin");
         }
     };
 

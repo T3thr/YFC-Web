@@ -1,14 +1,14 @@
-// components/Signin.jsx
-
 "use client";
 
 import Link from "next/link";
 import React, { useState, useContext, useEffect } from "react";
+import { useSession } from "next-auth/react"; // Import useSession
 import AuthContext from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const Signin = () => {
+  const { data: session } = useSession(); // Get the session data
   const { error, loginUser, clearErrors } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +16,13 @@ const Signin = () => {
   const router = useRouter();
   const params = useSearchParams();
   const callBackUrl = params.get("callbackUrl");
+
+  // Redirect to homepage if user is already signed in
+  useEffect(() => {
+    if (session) {
+      router.push("/"); // Redirect to homepage if authenticated
+    }
+  }, [session, router]);
 
   useEffect(() => {
     if (error) {
@@ -26,14 +33,24 @@ const Signin = () => {
 
   const submitUserHandler = async (e) => {
     e.preventDefault();
-    await loginUser({ email, password });
-    router.push("/"); // Navigate after the toast disappears
+    
+    const result = await loginUser({ email, password });
+
+    if (result.success) {
+      toast.success("Login successful!");
+      setTimeout(() => {
+        router.push("/"); // Redirect to homepage after a short delay
+        router.reload(); // Reload the page
+      }, 1500); 
+    } else {
+      toast.error(result.message || "Login failed. Please try again.");
+      // Stay on the login page
+    }
   };
 
   const submitAdminHandler = async (e) => {
     e.preventDefault();
-
-    router.push("/api/auth/signin?callbackUrl=/"); // Navigate after the toast disappears
+    router.push("/api/auth/signin?callbackUrl=/"); // Navigate to admin login
   };
 
   return (
@@ -90,12 +107,11 @@ const Signin = () => {
       <form onSubmit={submitAdminHandler}>
         <h2 className="mb-5 text-2xl font-semibold">Admin Login</h2>
 
-
         <button
           className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 w-full"
           type="submit"
         >
-          go to Admin Sign In
+          Go to Admin Sign In
         </button>
       </form>
     </div>
