@@ -160,7 +160,7 @@ export default function AddProductForm() {
 
         <div className="flex justify-end mt-6">
         <Link
-            href={'/products'}
+            href={'/admin/products'}
             className="text-center w-24 mr-3 px-2 py-1 text-white bg-green-500 rounded-sm hover:bg-green-400 focus:outline-none active:bg-green-600"
         >
             หน้าสินค้า

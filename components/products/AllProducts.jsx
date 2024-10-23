@@ -73,7 +73,7 @@ export default function AllProducts() {
         productsCount={filteredProducts?.length}
       />
       <Link
-        href={'/products/add'}
+        href={'/admin/products/add'}
         className="block p-2 mt-12 items-center justify-center text-center text-gray-700 bg-blue-400 hover:bg-blue-300 active:bg-blue-600 rounded-sm shadow-md"
       >
         เพิ่มสินค้า

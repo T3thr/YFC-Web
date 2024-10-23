@@ -112,7 +112,7 @@ export default function UploadImagePage({ params }) {
             )}
 
             <button
-                onClick={() => router.push('/products')}
+                onClick={() => router.push('/admin/products')}
                 className="mt-8 w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
             >
                 ย้อนกลับ
