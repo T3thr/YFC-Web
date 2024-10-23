@@ -78,31 +78,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginUser = async ({ email, password }) => {
+    try {
+        setLoading(true);
+        const res = await nextAuthSignIn("credentials", {
+            redirect: false,
+            email,
+            password,
+        });
+        setLoading(false);
 
-
-    const loginUser = async ({ email, password }) => {
-        try {
-            setLoading(true);
-            const res = await nextAuthSignIn("credentials", {
-                redirect: false,
-                email,
-                password,
-            });
-            setLoading(false);
-
-            if (res.error) {
-                toast.error(res.error);
-            } else if (res.ok) {
-                toast.success("Signin successful!");
-                router.push("/");
-            }
-        } catch (error) {
-            setLoading(false);
-            const errorMessage = error.response?.data?.message || "Signin failed";
-            toast.error(errorMessage);
-            router.push("/signin");
+        // Ensure the response structure is handled correctly
+        if (res.error) {
+            return { success: false, message: res.error }; // Return error as part of the object
+        } else if (res.ok) {
+            return { success: true }; // Indicate success
         }
-    };
+    } catch (error) {
+        setLoading(false);
+        const errorMessage = error.response?.data?.message || "Signin failed";
+        toast.error(errorMessage);
+        return { success: false, message: errorMessage }; // Handle error case
+    }
+};
 
   const adminSignIn = async ({ username, password }) => {
     try {

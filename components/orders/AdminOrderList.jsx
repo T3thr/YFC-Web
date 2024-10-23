@@ -2,15 +2,20 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import OrderItem from './OrderItem';
+import Loading from '@/app/loading';
 
 export default function AdminOrderList() {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
+      setIsLoading(true);
       const response = await fetch('/api/orders');
       const data = await response.json();
+      const sortedOrders = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setOrders(data);
+      setIsLoading(false);
     };
 
     fetchOrders();
@@ -43,6 +48,10 @@ export default function AdminOrderList() {
     setOrders((prev) => prev.filter((order) => order._id !== orderId));
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (!orders.length) {
     return <div className='text-center'>No orders found</div>;
   }
@@ -57,6 +66,7 @@ export default function AdminOrderList() {
           }`}
         >
           <h3 className='text-lg font-semibold'>Order #{order._id}</h3>
+          <p>User : {order.user.name}</p>
           <p>Date: {new Date(order.createdAt).toLocaleString()}</p>
           <p>Total: {order.totalAmount} ฿</p>
           <p>Shipping: {order.shippingCost} ฿</p>

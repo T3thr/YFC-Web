@@ -18,7 +18,7 @@ const Sidebar = () => {
           <>
             <li>
               <Link
-                href="/products/add"
+                href="/admin/products/add"
                 className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 Add Product <span className="text-red-500">(Admin)</span>
@@ -27,7 +27,7 @@ const Sidebar = () => {
 
             <li>
               <Link
-                href="/products"
+                href="/admin/products"
                 className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 All Products <span className="text-red-500">(Admin)</span>
@@ -36,13 +36,13 @@ const Sidebar = () => {
 
             <li>
               <Link
-                href="/profile/adminorders"
+                href="/admin/orders"
                 className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
               >
                 Manage Orders <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-{/* 
+            {/* 
             <li>
               <Link
                 href="/admin/users"
@@ -51,7 +51,7 @@ const Sidebar = () => {
                 All Users <span className="text-red-500">(Admin)</span>
               </Link>
             </li>
-*/}
+            */}
             <hr />
           </>
         )}
@@ -66,7 +66,7 @@ const Sidebar = () => {
         </li>
         <li>
           <Link
-            href="/profile/orders"
+            href="/orders"
             className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
           >
             Orders

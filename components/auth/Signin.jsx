@@ -37,12 +37,16 @@ const Signin = () => {
     const result = await loginUser({ email, password });
 
     if (result.success) {
-      toast.success("Login successful!");
+      toast.success("Login successful!", {
+        autoClose: 2000, // Set duration for 2 seconds
+      });
+
+      // Set a timeout to push and reload after the toast disappears
       setTimeout(() => {
-        router.push("/"); // Redirect to homepage after a short delay
-        router.reload(); // Reload the page
-      }, 1500); 
-    } else {
+        router.push("/"); // Redirect to homepage
+        window.location.reload(); // Reload the page
+      }, 700); // Match this time with autoClose time
+    }  else {
       toast.error(result.message || "Login failed. Please try again.");
       // Stay on the login page
     }
