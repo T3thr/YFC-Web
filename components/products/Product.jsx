@@ -63,8 +63,9 @@ export default function Product() {
   const productsCount = filteredProducts.length;
 
   const addToCart = (product) => {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
+  
       const productInCart = existingCart.cartItems.find(item => item.product === product.productSKU);
   
       if (productInCart) {
@@ -75,14 +76,14 @@ export default function Product() {
           productName: product.productName,
           price: product.price,
           images: product.images,
-          quantity: 1
+          quantity: 1,
         });
       }
   
       localStorage.setItem('cart', JSON.stringify(existingCart));
       window.dispatchEvent(new Event("storage"));
       alert(`${product.productName} has been added to your cart`);
-    }, 0);
+    });
   };
   
 
