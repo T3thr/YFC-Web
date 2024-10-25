@@ -1,4 +1,4 @@
-// components/OrderList.jsx
+// components/orders/OrderList.jsx
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';

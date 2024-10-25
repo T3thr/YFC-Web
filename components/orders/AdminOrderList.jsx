@@ -1,4 +1,4 @@
-// components/AdminOrderList.jsx
+// components/orders/AdminOrderList.jsx
 'use client';
 import React, { useEffect, useState } from 'react';
 import OrderItem from './OrderItem';
@@ -54,6 +54,14 @@ export default function AdminOrderList() {
 
   if (!orders.length) {
     return <div className='text-center'>No orders found</div>;
+  }
+
+  if (!session?.user?.role || session.user.role !== 'admin') {
+    return (
+      <div className='flex justify-center items-center min-w-full min-h-screen'>
+        <div className='text-xl text-red-500'>Access Denied. Admins Only.</div>
+      </div>
+    );
   }
 
   return (

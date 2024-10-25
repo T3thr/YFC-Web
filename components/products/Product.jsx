@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useAllProducts } from '@/backend/lib/productAction';
 import Image from 'next/image';
 import Loading from '@/app/loading';
@@ -81,7 +81,6 @@ export default function Product() {
 
     localStorage.setItem('cart', JSON.stringify(existingCart));
 
-    // Optionally, you can trigger a re-render in Menu to update the cart count
     window.dispatchEvent(new Event("storage"));
 
     alert(`${product.productName} has been added to your cart`);

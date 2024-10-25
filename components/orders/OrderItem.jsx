@@ -1,12 +1,7 @@
-// components/OrderItem.jsx
+// components/orders/OrderItem.jsx
 import React from 'react';
 
-export default function OrderItem({ order, isAdmin, onUpdateStatus, onDelete }) {
-  const handleDelete = () => {
-    if (onDelete) {
-      onDelete(order._id);
-    }
-  };
+export default function OrderItem({ order }) {
 
   return (
     <div
@@ -27,27 +22,6 @@ export default function OrderItem({ order, isAdmin, onUpdateStatus, onDelete }) 
         ))}
       </ul>
       <p>Status: {order.status}</p>
-      {isAdmin && (
-        <div className='mt-4'>
-          <button
-            className={`px-2 py-1 rounded mr-2 ${
-              order.status === 'delivered' ? 'bg-red-500' : 'bg-blue-500'
-            } text-white`}
-            onClick={() => {
-              const newStatus = order.status === 'delivered' ? 'undelivered' : 'delivered';
-              onUpdateStatus(order._id, newStatus);
-            }}
-          >
-            {order.status === 'delivered' ? 'Mark as Undelivered' : 'Mark as Delivered'}
-          </button>
-          <button
-            className='bg-red-500 text-white px-2 py-1 rounded'
-            onClick={handleDelete}
-          >
-            Delete Order
-          </button>
-        </div>
-      )}
     </div>
   );
 }
