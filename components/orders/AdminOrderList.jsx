@@ -1,10 +1,12 @@
 // components/orders/AdminOrderList.jsx
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSession } from "next-auth/react";
 import OrderItem from './OrderItem';
 import Loading from '@/app/loading';
 
 export default function AdminOrderList() {
+  const { data: session } = useSession();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
