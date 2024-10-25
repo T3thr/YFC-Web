@@ -63,28 +63,28 @@ export default function Product() {
   const productsCount = filteredProducts.length;
 
   const addToCart = (product) => {
-    const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
-
-    const productInCart = existingCart.cartItems.find(item => item.product === product.productSKU);
-
-    if (productInCart) {
-      productInCart.quantity += 1;
-    } else {
-      existingCart.cartItems.push({
-        product: product.productSKU,
-        productName: product.productName,
-        price: product.price,
-        images: product.images,
-        quantity: 1
-      });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-
-    window.dispatchEvent(new Event("storage"));
-
-    alert(`${product.productName} has been added to your cart`);
+    setTimeout(() => {
+      const existingCart = JSON.parse(localStorage.getItem('cart')) || { cartItems: [] };
+      const productInCart = existingCart.cartItems.find(item => item.product === product.productSKU);
+  
+      if (productInCart) {
+        productInCart.quantity += 1;
+      } else {
+        existingCart.cartItems.push({
+          product: product.productSKU,
+          productName: product.productName,
+          price: product.price,
+          images: product.images,
+          quantity: 1
+        });
+      }
+  
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+      window.dispatchEvent(new Event("storage"));
+      alert(`${product.productName} has been added to your cart`);
+    }, 0);
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -1,5 +1,3 @@
-// components/Signup.jsx
-
 "use client";
 
 import Link from "next/link";
@@ -19,6 +17,16 @@ const Signup = () => {
       clearErrors();
     }
   }, [error]);
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    
+    // Check for uppercase letters
+    if (/[A-Z]/.test(value)) {
+      toast.warn("Please use lowercase letters for your email.");
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -52,7 +60,7 @@ const Signup = () => {
             type="email"
             placeholder="Type your email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange} // Use the new handler here
             required
           />
         </div>
